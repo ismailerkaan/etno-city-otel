@@ -47,6 +47,36 @@ class SiteSettingsTest extends TestCase
             ->assertSee('Yeni Hero Başlığı');
     }
 
+    public function test_admin_can_update_site_settings_from_form_without_other_section_fields(): void
+    {
+        Storage::fake('public');
+        $admin = User::factory()->create(['is_admin' => true]);
+
+        $response = $this->actingAs($admin)->put(route('admin.site-settings.update'), [
+            'hotel_name' => 'EtnoCity Grand Hotel',
+            'phone' => '+90 555 999 8877',
+            'email' => 'test@etnocity.com',
+            'address' => 'Bodrum, Türkiye',
+            'logo' => UploadedFile::fake()->image('logo.png'),
+            'instagram_url' => 'https://instagram.com/etnocity',
+            'whatsapp_url' => '+905559998877',
+            'facebook_url' => 'https://facebook.com/etnocity',
+            'youtube_url' => 'https://youtube.com/@etnocity',
+            'tripadvisor_url' => 'https://tripadvisor.com/etnocity',
+            'newsletter_title' => 'Özel Bülten',
+            'newsletter_text' => 'Bültene abone olun.',
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect();
+
+        $this->assertDatabaseHas('site_settings', [
+            'hotel_name' => 'EtnoCity Grand Hotel',
+            'phone' => '+90 555 999 8877',
+            'email' => 'test@etnocity.com',
+        ]);
+    }
+
     public function test_admin_can_upload_and_remove_logo(): void
     {
         Storage::fake('public');

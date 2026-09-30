@@ -7,9 +7,22 @@
         @csrf
         @method('PUT')
 
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                <div class="alert-body">{{ session('success') }}</div>
+            </div>
+        @endif
+
         @if ($errors->any())
             <div class="alert alert-danger" role="alert">
-                <div class="alert-body">Lütfen işaretli alanları kontrol edin.</div>
+                <div class="alert-body">
+                    <strong>Lütfen aşağıdaki hataları kontrol edin:</strong>
+                    <ul class="mb-0 mt-50 ps-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
         @endif
 
