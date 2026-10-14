@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Sessiz Olanaklar')
+@section('title', 'Olanaklar')
 
 @section('content')
     {{-- 1. Bölüm Başlığı & Açıklaması --}}
@@ -81,7 +81,7 @@
                     {{-- TR / EN Başlık --}}
                     <div class="col-md-4 col-12 mb-1">
                         <label class="form-label fw-bold" for="new_title">Başlık (TR)</label>
-                        <input class="form-control @error('title') is-invalid @enderror" id="new_title" name="title" value="{{ old('title') }}" placeholder="Örn: Sonsuzluk Tuzlu Su Havuzu" required>
+                        <input class="form-control @error('title') is-invalid @enderror" id="new_title" name="title" value="{{ old('title') }}" placeholder="Örn: Yüksek Hızlı Wi-Fi" required>
                         @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-md-4 col-12 mb-1">

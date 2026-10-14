@@ -37,6 +37,7 @@
                     <li><a class="hover:text-on-surface" href="{{ route('home') }}#etkinlikler">{{ __('site.experiences') }}</a></li>
                     <li><a class="hover:text-on-surface" href="{{ route('gallery') }}">{{ __('site.gallery') }}</a></li>
                     <li><a class="hover:text-on-surface" href="{{ route('home') }}#hikayemiz">{{ __('site.story') }}</a></li>
+                    <li><a class="hover:text-on-surface" href="{{ route('contact') }}">{{ __('site.contact') }}</a></li>
                 </ul>
             </div>
             <div class="lg:col-span-2 space-y-6">

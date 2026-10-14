@@ -1,48 +1,74 @@
+@php
+    try {
+        $defaultCheckin = request('checkin') ? \Carbon\Carbon::parse(request('checkin')) : now();
+    } catch (\Exception $e) {
+        $defaultCheckin = now();
+    }
+    try {
+        $defaultCheckout = request('checkout') ? \Carbon\Carbon::parse(request('checkout')) : now()->addDay();
+    } catch (\Exception $e) {
+        $defaultCheckout = now()->addDay();
+    }
+    if ($defaultCheckout->lessThanOrEqualTo($defaultCheckin)) {
+        $defaultCheckout = (clone $defaultCheckin)->addDay();
+    }
+    $defaultAdults = max(1, (int) request('adults', 2));
+    $defaultChildren = max(0, (int) request('children', 0));
+    $defaultNights = max(1, (int) $defaultCheckin->diffInDays($defaultCheckout));
+
+    $turkishMonths = [1 => 'Oca', 2 => 'Şub', 3 => 'Mar', 4 => 'Nis', 5 => 'May', 6 => 'Haz', 7 => 'Tem', 8 => 'Ağu', 9 => 'Eyl', 10 => 'Eki', 11 => 'Kas', 12 => 'Ara'];
+    $turkishDays = [1 => 'Pazartesi', 2 => 'Salı', 3 => 'Çarşamba', 4 => 'Perşembe', 5 => 'Cuma', 6 => 'Cumartesi', 0 => 'Pazar'];
+    $checkinDisplay = $defaultCheckin->format('j') . ' ' . $turkishMonths[(int)$defaultCheckin->format('n')] . ', ' . $defaultCheckin->format('Y');
+    $checkinDay = $turkishDays[(int)$defaultCheckin->format('w')] . ' · 15:00';
+    $checkoutDisplay = $defaultCheckout->format('j') . ' ' . $turkishMonths[(int)$defaultCheckout->format('n')] . ', ' . $defaultCheckout->format('Y');
+    $checkoutDay = $turkishDays[(int)$defaultCheckout->format('w')] . ' · 12:00';
+@endphp
+
 <div class="w-full bg-surface/95 backdrop-blur-xl shadow-2xl p-6 lg:p-8 relative" id="booking-widget">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
 
         {{-- Check In --}}
         <div class="space-y-1.5">
-            <span class="font-label-sm text-label-sm uppercase text-secondary tracking-[0.2em] block">Giriş</span>
-            <div class="relative bg-surface-container px-4 py-3 flex items-center justify-between cursor-pointer group" id="checkin-trigger">
-                <div class="flex flex-col">
-                    <span class="font-title-md text-title-md text-on-surface font-normal" id="checkin-display">Tarih Seçin</span>
-                    <span class="font-label-sm text-[10px] text-on-surface-variant uppercase" id="checkin-day">Gün · 15:00</span>
+            <span class="font-label-sm text-label-sm uppercase text-secondary font-semibold tracking-[0.2em] block">Giriş</span>
+            <div class="relative bg-[#e6e1d7] hover:bg-[#ded7cc] border border-[#cfc8bc] hover:border-secondary/60 h-[58px] px-4 py-2 flex items-center justify-between cursor-pointer group transition-all duration-200" id="checkin-trigger">
+                <div class="flex flex-col justify-center">
+                    <span class="font-title-md text-title-md text-[#1c1c19] font-medium tracking-tight" id="checkin-display">{{ $checkinDisplay }}</span>
+                    <span class="font-label-sm text-[10px] text-secondary font-semibold uppercase tracking-wider" id="checkin-day">{{ $checkinDay }}</span>
                 </div>
-                <span class="material-symbols-outlined text-secondary text-[20px] group-hover:translate-y-0.5 transition-transform">calendar_today</span>
+                <span class="material-symbols-outlined text-secondary text-[22px] group-hover:scale-110 transition-transform">calendar_today</span>
             </div>
         </div>
 
         {{-- Check Out --}}
         <div class="space-y-1.5">
             <div class="flex items-center justify-between">
-                <span class="font-label-sm text-label-sm uppercase text-secondary tracking-[0.2em] block">Çıkış</span>
-                <span class="font-label-sm text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1.5 py-0.5" id="nights-badge">Gece Seçin</span>
+                <span class="font-label-sm text-label-sm uppercase text-secondary font-semibold tracking-[0.2em] block">Çıkış</span>
+                <span class="font-label-sm text-[10px] bg-secondary text-white font-semibold px-2 py-0.5 tracking-wider uppercase" id="nights-badge">{{ $defaultNights }} Gece</span>
             </div>
-            <div class="relative bg-surface-container px-4 py-3 flex items-center justify-between cursor-pointer group" id="checkout-trigger">
-                <div class="flex flex-col">
-                    <span class="font-title-md text-title-md text-on-surface font-normal" id="checkout-display">Tarih Seçin</span>
-                    <span class="font-label-sm text-[10px] text-on-surface-variant uppercase" id="checkout-day">Gün · 12:00</span>
+            <div class="relative bg-[#e6e1d7] hover:bg-[#ded7cc] border border-[#cfc8bc] hover:border-secondary/60 h-[58px] px-4 py-2 flex items-center justify-between cursor-pointer group transition-all duration-200" id="checkout-trigger">
+                <div class="flex flex-col justify-center">
+                    <span class="font-title-md text-title-md text-[#1c1c19] font-medium tracking-tight" id="checkout-display">{{ $checkoutDisplay }}</span>
+                    <span class="font-label-sm text-[10px] text-secondary font-semibold uppercase tracking-wider" id="checkout-day">{{ $checkoutDay }}</span>
                 </div>
-                <span class="material-symbols-outlined text-secondary text-[20px] group-hover:translate-y-0.5 transition-transform">event</span>
+                <span class="material-symbols-outlined text-secondary text-[22px] group-hover:scale-110 transition-transform">event</span>
             </div>
         </div>
 
         {{-- Guests --}}
         <div class="space-y-1.5">
-            <span class="font-label-sm text-label-sm uppercase text-secondary tracking-[0.2em] block">Kişi Sayısı</span>
-            <div class="relative bg-surface-container px-4 py-3 flex items-center justify-between cursor-pointer group" id="guests-trigger">
-                <div class="flex flex-col">
-                    <span class="font-title-md text-title-md text-on-surface font-normal" id="guests-display">2 Yetişkin</span>
-                    <span class="font-label-sm text-[10px] text-on-surface-variant uppercase" id="children-display">0 Çocuk</span>
+            <span class="font-label-sm text-label-sm uppercase text-secondary font-semibold tracking-[0.2em] block">Kişi Sayısı</span>
+            <div class="relative bg-[#e6e1d7] hover:bg-[#ded7cc] border border-[#cfc8bc] hover:border-secondary/60 h-[58px] px-4 py-2 flex items-center justify-between cursor-pointer group transition-all duration-200" id="guests-trigger">
+                <div class="flex flex-col justify-center">
+                    <span class="font-title-md text-title-md text-[#1c1c19] font-medium tracking-tight" id="guests-display">{{ $defaultAdults }} Yetişkin</span>
+                    <span class="font-label-sm text-[10px] text-secondary font-semibold uppercase tracking-wider" id="children-display">{{ $defaultChildren }} Çocuk</span>
                 </div>
-                <span class="material-symbols-outlined text-secondary text-[20px]">group</span>
+                <span class="material-symbols-outlined text-secondary text-[22px] group-hover:scale-110 transition-transform">group</span>
             </div>
         </div>
 
         {{-- Submit CTA --}}
         <div class="flex flex-col justify-end">
-            <a href="{{ route('reservation.step1') }}" class="w-full h-[58px] bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary transition-all duration-300 font-label-md text-label-md uppercase tracking-[0.22em] flex items-center justify-center gap-3 px-4 group shadow-md">
+            <a href="{{ route('reservation.step1', ['checkin' => $defaultCheckin->format('Y-m-d'), 'checkout' => $defaultCheckout->format('Y-m-d'), 'adults' => $defaultAdults, 'children' => $defaultChildren]) }}" id="booking-submit-cta" class="w-full h-[58px] bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary transition-all duration-300 font-label-md text-label-md uppercase tracking-[0.22em] flex items-center justify-center gap-3 px-4 group shadow-md">
                 <span>Müsaitlik Sorgula</span>
                 <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </a>
@@ -55,10 +81,6 @@
             <span class="material-symbols-outlined text-secondary text-[16px]">verified</span>
             <span>En İyi Doğrudan Fiyat Garantisi</span>
         </div>
-        <div class="hidden md:flex items-center gap-2">
-            <span class="material-symbols-outlined text-secondary text-[16px]">wine_bar</span>
-            <span>Dom Pérignon Karşılama İkramı &amp; Soğuk Sıkım Botanikler</span>
-        </div>
         <div class="flex items-center gap-2">
             <span class="material-symbols-outlined text-secondary text-[16px]">concierge</span>
             <span>7/24 Özel Concierge Hizmeti</span>
@@ -66,8 +88,8 @@
     </div>
 </div>
 
-{{-- Floating Calendars (Fixed position, outside any overflow container) --}}
-<div id="checkin-calendar" style="display:none;position:fixed;z-index:9999;background:#fcf9f4;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);padding:16px;width:288px;border:1px solid #ebe8e3;">
+{{-- Floating Calendars (Absolute position, attached to document body) --}}
+<div id="checkin-calendar" style="display:none;position:absolute;z-index:9999;background:#fcf9f4;box-shadow:0 20px 45px -10px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.08);padding:18px;width:300px;border:1px solid #cfc8bd;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
         <button id="checkin-prev" type="button" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;border:none;color:#1c1c19;">
             <span class="material-symbols-outlined" style="font-size:18px;">chevron_left</span>
@@ -89,7 +111,7 @@
     <div id="checkin-days" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;"></div>
 </div>
 
-<div id="checkout-calendar" style="display:none;position:fixed;z-index:9999;background:#fcf9f4;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);padding:16px;width:288px;border:1px solid #ebe8e3;">
+<div id="checkout-calendar" style="display:none;position:absolute;z-index:9999;background:#fcf9f4;box-shadow:0 20px 45px -10px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.08);padding:18px;width:300px;border:1px solid #cfc8bd;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
         <button id="checkout-prev" type="button" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;border:none;color:#1c1c19;">
             <span class="material-symbols-outlined" style="font-size:18px;">chevron_left</span>
@@ -112,18 +134,18 @@
 </div>
 
 {{-- Guests Dropdown --}}
-<div id="guests-dropdown" style="display:none;position:fixed;z-index:9999;background:#fcf9f4;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);padding:20px;width:256px;border:1px solid #ebe8e3;">
+<div id="guests-dropdown" style="display:none;position:absolute;z-index:9999;background:#fcf9f4;box-shadow:0 20px 45px -10px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.08);padding:20px;width:280px;border:1px solid #cfc8bd;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
         <div>
             <p style="font-family:Manrope,sans-serif;font-size:1.125rem;font-weight:500;color:#1c1c19;margin:0;">Yetişkin</p>
             <p style="font-family:Manrope,sans-serif;font-size:10px;color:#444748;text-transform:uppercase;margin:0;">13 yaş ve üzeri</p>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
-            <button id="adults-minus" type="button" style="width:32px;height:32px;border:1px solid #ebe8e3;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;color:#1c1c19;">
+            <button id="adults-minus" type="button" style="width:32px;height:32px;border:1px solid #cfc8bd;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;color:#1c1c19;">
                 <span class="material-symbols-outlined" style="font-size:16px;">remove</span>
             </button>
             <span id="adults-count" style="font-family:Manrope,sans-serif;font-size:1.125rem;font-weight:500;color:#1c1c19;min-width:16px;text-align:center;">2</span>
-            <button id="adults-plus" type="button" style="width:32px;height:32px;border:1px solid #ebe8e3;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;color:#1c1c19;">
+            <button id="adults-plus" type="button" style="width:32px;height:32px;border:1px solid #cfc8bd;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;color:#1c1c19;">
                 <span class="material-symbols-outlined" style="font-size:16px;">add</span>
             </button>
         </div>
@@ -134,16 +156,16 @@
             <p style="font-family:Manrope,sans-serif;font-size:10px;color:#444748;text-transform:uppercase;margin:0;">0–12 yaş</p>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
-            <button id="children-minus" type="button" style="width:32px;height:32px;border:1px solid #ebe8e3;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;color:#1c1c19;">
+            <button id="children-minus" type="button" style="width:32px;height:32px;border:1px solid #cfc8bd;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;color:#1c1c19;">
                 <span class="material-symbols-outlined" style="font-size:16px;">remove</span>
             </button>
             <span id="children-count" style="font-family:Manrope,sans-serif;font-size:1.125rem;font-weight:500;color:#1c1c19;min-width:16px;text-align:center;">0</span>
-            <button id="children-plus" type="button" style="width:32px;height:32px;border:1px solid #ebe8e3;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;color:#1c1c19;">
+            <button id="children-plus" type="button" style="width:32px;height:32px;border:1px solid #cfc8bd;display:flex;align-items:center;justify-content:center;cursor:pointer;background:none;color:#1c1c19;">
                 <span class="material-symbols-outlined" style="font-size:16px;">add</span>
             </button>
         </div>
     </div>
-    <button id="guests-done" type="button" style="width:100%;padding:8px 0;background:#000;color:#fff;font-family:Manrope,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;border:none;cursor:pointer;">Tamam</button>
+    <button id="guests-done" type="button" style="width:100%;padding:10px 0;background:#000;color:#fff;font-family:Manrope,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;border:none;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#735a3c'" onmouseout="this.style.background='#000'">Tamam</button>
 </div>
 
 <script>
@@ -151,14 +173,18 @@
     var MONTHS = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
     var DAYS = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
 
-    var checkinDate  = null;
-    var checkoutDate = null;
-    var adults   = 2;
-    var children = 0;
+    var checkinDate  = new Date({{ $defaultCheckin->year }}, {{ $defaultCheckin->month - 1 }}, {{ $defaultCheckin->day }});
+    checkinDate.setHours(0, 0, 0, 0);
+
+    var checkoutDate = new Date({{ $defaultCheckout->year }}, {{ $defaultCheckout->month - 1 }}, {{ $defaultCheckout->day }});
+    checkoutDate.setHours(0, 0, 0, 0);
+
+    var adults   = {{ $defaultAdults }};
+    var children = {{ $defaultChildren }};
 
     var calState = {
-        checkin:  { year: new Date().getFullYear(), month: new Date().getMonth() },
-        checkout: { year: new Date().getFullYear(), month: new Date().getMonth() }
+        checkin:  { year: checkinDate.getFullYear(), month: checkinDate.getMonth() },
+        checkout: { year: checkoutDate.getFullYear(), month: checkoutDate.getMonth() }
     };
 
     function formatDisplay(d) {
@@ -275,27 +301,95 @@
         document.getElementById('adults-count').textContent = adults;
         document.getElementById('children-count').textContent = children;
 
+        var cta = document.getElementById('booking-submit-cta');
+        if (cta && checkinDate && checkoutDate) {
+            var pad = function(n) { return (n < 10 ? '0' : '') + n; };
+            var formatIso = function(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+            var base = cta.href.split('?')[0];
+            var params = new URLSearchParams();
+            params.set('checkin', formatIso(checkinDate));
+            params.set('checkout', formatIso(checkoutDate));
+            params.set('adults', adults);
+            params.set('children', children);
+            cta.href = base + '?' + params.toString();
+        }
+
         renderCalendar('checkin');
         renderCalendar('checkout');
     }
 
+    var currentOpen = null;
+
+    function initPopups() {
+        ['checkin-calendar', 'checkout-calendar', 'guests-dropdown'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el && el.parentElement !== document.body) {
+                document.body.appendChild(el);
+            }
+        });
+    }
+
+    function positionDropdown(type) {
+        if (!type) return;
+        var el = document.getElementById(type === 'guests' ? 'guests-dropdown' : type + '-calendar');
+        var trigger = document.getElementById(type + '-trigger');
+        if (!el || !trigger || el.style.display === 'none') return;
+
+        var rect = trigger.getBoundingClientRect();
+        var top = rect.bottom + window.scrollY + 8;
+        var left = rect.left + window.scrollX;
+        var calWidth = el.offsetWidth || (type === 'guests' ? 280 : 300);
+
+        var maxLeft = window.innerWidth - calWidth - 16 + window.scrollX;
+        if (left > maxLeft) {
+            left = Math.max(16 + window.scrollX, maxLeft);
+        }
+
+        el.style.position = 'absolute';
+        el.style.top = top + 'px';
+        el.style.left = left + 'px';
+    }
+
     function openDropdown(type) {
+        initPopups();
         closeAll();
         var el = document.getElementById(type === 'guests' ? 'guests-dropdown' : type + '-calendar');
         var trigger = document.getElementById(type + '-trigger');
         if (!el || !trigger) return;
-        var rect = trigger.getBoundingClientRect();
-        el.style.top  = (rect.bottom + window.scrollY + 6) + 'px';
-        el.style.left = rect.left + 'px';
+
+        currentOpen = type;
         el.style.display = 'block';
+        positionDropdown(type);
     }
 
     function closeAll() {
+        currentOpen = null;
         ['checkin-calendar','checkout-calendar','guests-dropdown'].forEach(function(id) {
             var el = document.getElementById(id);
             if (el) el.style.display = 'none';
         });
     }
+
+    // Scroll ve Resize dinleyicileri - sayfa kaydırıldığında takibi korur
+    window.addEventListener('scroll', function() {
+        if (currentOpen) {
+            var trigger = document.getElementById(currentOpen + '-trigger');
+            if (trigger) {
+                var rect = trigger.getBoundingClientRect();
+                if (rect.bottom < -20 || rect.top > window.innerHeight + 20) {
+                    closeAll();
+                } else {
+                    positionDropdown(currentOpen);
+                }
+            }
+        }
+    }, { passive: true });
+
+    window.addEventListener('resize', function() {
+        if (currentOpen) {
+            positionDropdown(currentOpen);
+        }
+    });
 
     // Tetikleyiciler
     document.getElementById('checkin-trigger').addEventListener('click', function(e) {
@@ -324,9 +418,15 @@
         var cc = document.getElementById('checkin-calendar');
         var oc = document.getElementById('checkout-calendar');
         var gd = document.getElementById('guests-dropdown');
-        if (w && !w.contains(e.target) && !cc.contains(e.target) && !oc.contains(e.target) && !gd.contains(e.target)) {
-            closeAll();
+        if (
+            (w && w.contains(e.target)) ||
+            (cc && cc.contains(e.target)) ||
+            (oc && oc.contains(e.target)) ||
+            (gd && gd.contains(e.target))
+        ) {
+            return;
         }
+        closeAll();
     });
 
     // Ay navigasyonu
@@ -372,8 +472,8 @@
         e.stopPropagation(); closeAll();
     });
 
-    // İlk render
-    renderCalendar('checkin');
-    renderCalendar('checkout');
+    // İlk render ve DOM hazırlığı
+    initPopups();
+    updateDisplays();
 })();
 </script>

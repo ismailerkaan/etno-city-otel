@@ -56,7 +56,7 @@
                             <input class="form-control @error('logo') is-invalid @enderror" type="file" id="logo" name="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml">
                             @if ($siteSetting->logoUrl())
                                 <div class="d-flex align-items-center gap-2 p-1 border rounded bg-light">
-                                    <img src="{{ $siteSetting->logoUrl() }}" alt="Mevcut Logo" style="max-height: 40px; max-width: 140px; object-fit: contain;">
+                                    <img src="{{ $siteSetting->logoUrl() }}" alt="Mevcut Logo" style="max-height: 64px; max-width: 220px; object-fit: contain;">
                                     <div class="form-check form-check-inline ms-1">
                                         <input class="form-check-input" type="checkbox" id="remove_logo" name="remove_logo" value="1">
                                         <label class="form-check-label text-danger small" for="remove_logo">Logoyu Kaldır</label>

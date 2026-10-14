@@ -5,7 +5,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? (($siteSetting?->hotel_name ?? 'EtnoCity Otel').' & Retreat') }}</title>
+    <title>{{ $title ?? ($siteSetting?->hotel_name ?? 'EtnoCity Otel') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon-key.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('favicon-key.png') }}">
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">

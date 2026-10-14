@@ -1,4 +1,4 @@
-<x-layouts.app :site-setting="$siteSetting" :title="(app()->isLocale('en') ? 'Visual Archive & Gallery' : 'Görsel Arşiv & Galeri') . ' | ' . ($siteSetting?->hotel_name ?? 'EtnoCity Otel')">
+<x-layouts.app :site-setting="$siteSetting" :title="(app()->isLocale('en') ? 'Hotel Gallery' : 'Otel Galerisi') . ' | ' . ($siteSetting?->hotel_name ?? 'EtnoCity Otel')">
     <div class="flex flex-col w-full">
         <!-- 1. HERO / BANNER -->
         <section class="relative w-full pt-32 pb-16 bg-surface-container-low border-b border-surface-container">
@@ -13,28 +13,28 @@
                 <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-2">
                     <div class="space-y-3 max-w-3xl">
                         <span class="font-label-md text-label-md uppercase text-secondary tracking-[0.28em] block">
-                            {{ $siteSetting?->translated('gallery_eyebrow') ?: (app()->isLocale('en') ? 'Visual Archive' : 'Görsel Arşiv') }}
+                            {{ $siteSetting?->translated('gallery_eyebrow') ?: (app()->isLocale('en') ? 'Around the Hotel' : 'Otelden Kareler') }}
                         </span>
                         <h1 class="font-display-lg text-headline-lg lg:text-display-md text-on-surface font-normal">
-                            {{ $siteSetting?->translated('gallery_title') ?: (app()->isLocale('en') ? 'Atmospheric Moments' : 'Atmosferik Anlar') }}
+                            {{ $siteSetting?->translated('gallery_title') ?: (app()->isLocale('en') ? 'Take a Closer Look at Your Stay' : 'Konaklamanızı Yakından Görün') }}
                         </h1>
                         <p class="font-body-md text-body-md text-on-surface-variant font-light leading-relaxed">
                             {{ $siteSetting?->translated('gallery_description') ?: (app()->isLocale('en') 
-                                ? 'Immerse in the serene Aegean sanctuary. Explore our architectural suites, secluded coves, tranquil wellness spaces, and Mediterranean culinary artistry.' 
-                                : 'Ege\'nin dingin sığınağını keşfedin. Mimari süitlerimiz, gizli koylarımız, arındırıcı sağlık alanlarımız ve Akdeniz lezzet sanatının görsel yolculuğu.') }}
+                                ? 'Explore our rooms, shared spaces and the details that complete your stay.'
+                                : 'Odalarımızı, ortak alanlarımızı ve konaklamanızı tamamlayan ayrıntıları keşfedin.') }}
                         </p>
                     </div>
 
                     <div class="text-right flex-shrink-0">
                         <span class="font-headline-md text-headline-md text-secondary">{{ $images->count() }}</span>
-                        <span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant block">{{ app()->isLocale('en') ? 'Curated Frames' : 'Seçkin Kare' }}</span>
+                        <span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant block">{{ app()->isLocale('en') ? 'Photos' : 'Fotoğraf' }}</span>
                     </div>
                 </div>
 
                 <!-- Filter Pill Tabs -->
                 <div class="pt-8 flex flex-wrap items-center gap-2.5" id="galleryFilters">
                     <button type="button" data-filter="all" class="gallery-pill px-5 py-2.5 bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-wider transition-all duration-300">
-                        {{ app()->isLocale('en') ? 'All Moments' : 'Tümü' }} <span class="opacity-75 text-[11px] ml-1">({{ $images->count() }})</span>
+                        {{ app()->isLocale('en') ? 'All' : 'Tümü' }} <span class="opacity-75 text-[11px] ml-1">({{ $images->count() }})</span>
                     </button>
                     @foreach ($categories as $cat)
                         <button type="button" data-filter="{{ $cat->id }}" class="gallery-pill px-5 py-2.5 bg-surface-container text-on-surface hover:bg-surface-container-highest font-label-sm text-label-sm uppercase tracking-wider transition-all duration-300">

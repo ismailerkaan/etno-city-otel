@@ -49,7 +49,7 @@
                     </div>
                     <div class="col-md-4 col-12 mb-1">
                         <label class="form-label fw-bold" for="location_address">Kısa Konum / Bölge Etiketi</label>
-                        <input class="form-control" id="location_address" name="location_address" value="{{ old('location_address', $siteSetting->location_address) }}" placeholder="Örn: Cape Artemis, Gökçebel Koyu, Bodrum">
+                        <input class="form-control" id="location_address" name="location_address" value="{{ old('location_address', $siteSetting->location_address) }}" placeholder="Örn: Otelin açık adresi">
                     </div>
                     <div class="col-md-4 col-12 mb-1">
                         <label class="form-label fw-bold" for="location_pin_label">Harita Rozet / Pin Başlığı</label>
@@ -61,29 +61,29 @@
                     {{-- Türkçe Bölüm Başlıkları --}}
                     <div class="col-md-6 col-12 mb-1">
                         <label class="form-label fw-bold" for="location_eyebrow">Üst Etiket (TR)</label>
-                        <input class="form-control" id="location_eyebrow" name="location_eyebrow" value="{{ old('location_eyebrow', $siteSetting->location_eyebrow) }}" placeholder="Örn: Yarımadaya Varış">
+                        <input class="form-control" id="location_eyebrow" name="location_eyebrow" value="{{ old('location_eyebrow', $siteSetting->location_eyebrow) }}" placeholder="Örn: Ulaşım">
                     </div>
                     <div class="col-md-6 col-12 mb-1">
                         <label class="form-label fw-bold" for="location_title">Ana Başlık (TR)</label>
-                        <input class="form-control" id="location_title" name="location_title" value="{{ old('location_title', $siteSetting->location_title) }}" placeholder="Örn: Sakin Ama Kolayca Ulaşılabilir" required>
+                        <input class="form-control" id="location_title" name="location_title" value="{{ old('location_title', $siteSetting->location_title) }}" placeholder="Örn: Konumumuz" required>
                     </div>
                     <div class="col-12 mb-2">
                         <label class="form-label fw-bold" for="location_description">Tanıtım Açıklaması (TR)</label>
-                        <textarea class="form-control" id="location_description" name="location_description" rows="2" placeholder="Otel konumu hakkında açıklama...">{{ old('location_description', $siteSetting->location_description) }}</textarea>
+                        <textarea class="form-control" id="location_description" name="location_description" rows="2" placeholder="Örn: Yol tarifi alarak otelimize kolayca ulaşabilirsiniz.">{{ old('location_description', $siteSetting->location_description) }}</textarea>
                     </div>
 
                     {{-- İngilizce Bölüm Başlıkları --}}
                     <div class="col-md-6 col-12 mb-1">
                         <label class="form-label fw-bold text-info" for="location_eyebrow_en">Eyebrow (EN)</label>
-                        <input class="form-control" id="location_eyebrow_en" name="location_eyebrow_en" value="{{ old('location_eyebrow_en', $siteSetting->location_eyebrow_en) }}" placeholder="Ex: Peninsula Arrival">
+                        <input class="form-control" id="location_eyebrow_en" name="location_eyebrow_en" value="{{ old('location_eyebrow_en', $siteSetting->location_eyebrow_en) }}" placeholder="Ex: Getting Here">
                     </div>
                     <div class="col-md-6 col-12 mb-1">
                         <label class="form-label fw-bold text-info" for="location_title_en">Title (EN)</label>
-                        <input class="form-control" id="location_title_en" name="location_title_en" value="{{ old('location_title_en', $siteSetting->location_title_en) }}" placeholder="Ex: Secluded Yet Effortlessly Accessible">
+                        <input class="form-control" id="location_title_en" name="location_title_en" value="{{ old('location_title_en', $siteSetting->location_title_en) }}" placeholder="Ex: Our Location">
                     </div>
                     <div class="col-12 mb-2">
                         <label class="form-label fw-bold text-info" for="location_description_en">Description (EN)</label>
-                        <textarea class="form-control" id="location_description_en" name="location_description_en" rows="2" placeholder="English description of location...">{{ old('location_description_en', $siteSetting->location_description_en) }}</textarea>
+                        <textarea class="form-control" id="location_description_en" name="location_description_en" rows="2" placeholder="Ex: You can easily reach our hotel by getting directions.">{{ old('location_description_en', $siteSetting->location_description_en) }}</textarea>
                     </div>
                 </div>
 
@@ -134,20 +134,20 @@
                     {{-- Başlık (TR) --}}
                     <div class="col-md-4 col-12 mb-1">
                         <label class="form-label fw-bold" for="new_title">Nokta / Yer Adı (TR) <span class="text-danger">*</span></label>
-                        <input class="form-control @error('title') is-invalid @enderror" id="new_title" name="title" value="{{ old('title') }}" placeholder="Örn: Bodrum-Milas Airport (BJV)" required>
+                        <input class="form-control @error('title') is-invalid @enderror" id="new_title" name="title" value="{{ old('title') }}" placeholder="Örn: Şehir Merkezi" required>
                         @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
                     {{-- Başlık (EN) --}}
                     <div class="col-md-5 col-12 mb-1">
                         <label class="form-label fw-bold text-info" for="new_title_en">Place Name (EN)</label>
-                        <input class="form-control" id="new_title_en" name="title_en" value="{{ old('title_en') }}" placeholder="Ex: Bodrum-Milas Airport (BJV)">
+                        <input class="form-control" id="new_title_en" name="title_en" value="{{ old('title_en') }}" placeholder="Ex: City Centre">
                     </div>
 
                     {{-- Ulaşım Açıklaması (TR) --}}
                     <div class="col-md-5 col-12 mb-1">
                         <label class="form-label fw-bold" for="new_desc">Ulaşım / Süre Açıklaması (TR)</label>
-                        <input class="form-control" id="new_desc" name="description" value="{{ old('description') }}" placeholder="Örn: Özel Şoför: 35 dk · Doğrudan Helikopter: 10 dk">
+                        <input class="form-control" id="new_desc" name="description" value="{{ old('description') }}" placeholder="Örn: Toplu taşıma ile kolay erişim">
                     </div>
 
                     {{-- Ulaşım Açıklaması (EN) --}}

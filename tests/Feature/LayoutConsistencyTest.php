@@ -3,6 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Event;
+use App\Models\Reservation;
+use App\Models\RoomImage;
+use App\Models\RoomType;
 use App\Models\SiteSetting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -31,16 +34,18 @@ class LayoutConsistencyTest extends TestCase
             'category' => 'Test Kategori',
             'description' => 'Test Açıklama',
         ]);
+        $roomType = RoomType::factory()->create(['name' => 'Test Oda']);
+        RoomImage::factory()->for($roomType)->create();
+        $reservation = Reservation::factory()->for($roomType)->create();
 
         $routes = [
             route('home'),
             route('gallery'),
             route('events.show', $event),
             route('reservation.step1'),
-            route('reservation.step2'),
-            route('reservation.step3'),
-            route('reservation.step4'),
-            route('reservation.step5'),
+            route('reservation.step2', $roomType),
+            route('reservation.step4', $roomType),
+            route('reservation.payment', $reservation),
         ];
 
         foreach ($routes as $url) {

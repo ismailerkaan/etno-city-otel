@@ -16,7 +16,7 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
             <div>
                 <h4 class="mb-50">Anasayfa Otel Tanıtımı</h4>
-                <p class="text-muted mb-0">"EtnoCity Otel'e Hoş Geldiniz - Deniz ve Yaşayan Taşla Uyum İçinde Yaratıldı" alanını buradan düzenleyebilirsiniz.</p>
+                <p class="text-muted mb-0">Otel tanıtım başlığını, açıklamalarını, görselini ve öne çıkan bilgi kartını buradan düzenleyebilirsiniz.</p>
             </div>
             <button class="btn btn-primary btn-lg shadow" type="submit">
                 <i data-feather="save" class="me-50"></i> Değişiklikleri Kaydet
@@ -41,7 +41,7 @@
 
                         <div class="mb-1">
                             <label class="form-label fw-bold" for="about_title">Ana Başlık</label>
-                            <input class="form-control @error('about_title') is-invalid @enderror" id="about_title" name="about_title" value="{{ old('about_title', $siteSetting->about_title) }}" placeholder="Örn: Deniz ve Yaşayan Taşla Uyum İçinde Yaratıldı" required>
+                            <input class="form-control @error('about_title') is-invalid @enderror" id="about_title" name="about_title" value="{{ old('about_title', $siteSetting->about_title) }}" placeholder="Örn: Şehrin Ritmine Uyum Sağlayan Konfor" required>
                             @error('about_title')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
@@ -149,25 +149,25 @@
 
                         <div class="mb-1">
                             <label class="form-label fw-bold" for="award_badge_title">Rozet Başlığı (TR)</label>
-                            <input class="form-control @error('award_badge_title') is-invalid @enderror" id="award_badge_title" name="award_badge_title" value="{{ old('award_badge_title', $siteSetting->award_badge_title) }}" placeholder="Örn: 1 Numaralı Sığınak Seçildi">
+                            <input class="form-control @error('award_badge_title') is-invalid @enderror" id="award_badge_title" name="award_badge_title" value="{{ old('award_badge_title', $siteSetting->award_badge_title) }}" placeholder="Örn: Konforlu ve Özenli Konaklama">
                             @error('award_badge_title')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
                         <div class="mb-1">
                             <label class="form-label" for="award_badge_subtitle">Rozet Alt Metni (TR)</label>
-                            <input class="form-control @error('award_badge_subtitle') is-invalid @enderror" id="award_badge_subtitle" name="award_badge_subtitle" value="{{ old('award_badge_subtitle', $siteSetting->award_badge_subtitle) }}" placeholder="Örn: Akdeniz Butik Sığınak & Mimarlık Ödülü 2024">
+                            <input class="form-control @error('award_badge_subtitle') is-invalid @enderror" id="award_badge_subtitle" name="award_badge_subtitle" value="{{ old('award_badge_subtitle', $siteSetting->award_badge_subtitle) }}" placeholder="Örn: İş ve şehir gezileri için işlevsel çözümler">
                             @error('award_badge_subtitle')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
                         <div class="mb-1 pt-1 border-top">
                             <label class="form-label fw-bold text-info" for="award_badge_title_en">Badge Title (EN)</label>
-                            <input class="form-control @error('award_badge_title_en') is-invalid @enderror" id="award_badge_title_en" name="award_badge_title_en" value="{{ old('award_badge_title_en', $siteSetting->award_badge_title_en) }}" placeholder="Ex: Voted #1 Sanctuary">
+                            <input class="form-control @error('award_badge_title_en') is-invalid @enderror" id="award_badge_title_en" name="award_badge_title_en" value="{{ old('award_badge_title_en', $siteSetting->award_badge_title_en) }}" placeholder="Ex: Comfort With Thoughtful Service">
                             @error('award_badge_title_en')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
                         <div class="mb-1">
                             <label class="form-label text-info" for="award_badge_subtitle_en">Badge Subtitle (EN)</label>
-                            <input class="form-control @error('award_badge_subtitle_en') is-invalid @enderror" id="award_badge_subtitle_en" name="award_badge_subtitle_en" value="{{ old('award_badge_subtitle_en', $siteSetting->award_badge_subtitle_en) }}" placeholder="Ex: Mediterranean Boutique Sanctuary & Architecture Award 2024">
+                            <input class="form-control @error('award_badge_subtitle_en') is-invalid @enderror" id="award_badge_subtitle_en" name="award_badge_subtitle_en" value="{{ old('award_badge_subtitle_en', $siteSetting->award_badge_subtitle_en) }}" placeholder="Ex: Practical stays for business and city breaks">
                             @error('award_badge_subtitle_en')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                     </div>

@@ -5,10 +5,10 @@
 @section('content')
     <div class="row match-height">
         @foreach ([
-            ['label' => 'Oda Tipleri', 'value' => '—', 'icon' => 'layers', 'color' => 'primary'],
-            ['label' => 'Aktif Rezervasyon', 'value' => '—', 'icon' => 'calendar', 'color' => 'success'],
-            ['label' => 'Bugünkü Giriş', 'value' => '—', 'icon' => 'log-in', 'color' => 'info'],
-            ['label' => 'Bekleyen Ödeme', 'value' => '—', 'icon' => 'credit-card', 'color' => 'warning'],
+            ['label' => 'Oda Tipleri', 'value' => $roomTypeCount, 'icon' => 'layers', 'color' => 'primary'],
+            ['label' => 'Aktif Rezervasyon', 'value' => $activeReservationCount, 'icon' => 'calendar', 'color' => 'success'],
+            ['label' => 'Bugünkü Giriş', 'value' => $todayCheckInCount, 'icon' => 'log-in', 'color' => 'info'],
+            ['label' => 'Bekleyen Ödeme', 'value' => $pendingPaymentCount, 'icon' => 'credit-card', 'color' => 'warning'],
         ] as $stat)
             <div class="col-xl-3 col-md-6 col-12">
                 <div class="card">
@@ -26,10 +26,10 @@
     <div class="row match-height">
         <div class="col-lg-8 col-12">
             <div class="card">
-                <div class="card-header"><h4 class="card-title">Yönetim paneli hazır</h4></div>
+                <div class="card-header"><h4 class="card-title">Oda ve rezervasyon yönetimi</h4></div>
                 <div class="card-body">
-                    <p class="card-text">Vuexy admin kabuğu, yönetici oturumu ve erişim koruması kuruldu. Şimdi modülleri kontrollü biçimde ekleyebiliriz.</p>
-                    <div class="alert alert-primary mb-0" role="alert"><div class="alert-body"><strong>Önerilen ilk modül:</strong> Oda tipleri, oda görselleri ve temel fiyat yönetimi.</div></div>
+                    <p class="card-text">Oda tiplerini, gecelik fiyatları, görselleri ve rezervasyon kayıtlarını buradan yönetebilirsiniz.</p>
+                    <div class="d-flex flex-wrap gap-1"><a class="btn btn-primary" href="{{ route('admin.rooms.index') }}">Odaları Yönet</a><a class="btn btn-outline-primary" href="{{ route('admin.reservations.index') }}">Rezervasyonları Gör</a></div>
                 </div>
             </div>
         </div>

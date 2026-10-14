@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dashboard') - EtnoCity Otel</title>
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('vendor/vuexy/favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon-key.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('vendor/vuexy/app-assets/vendors/css/vendors.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/vuexy/app-assets/css/bootstrap.css') }}">
@@ -68,9 +68,8 @@
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
                 <li class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.dashboard') }}"><i data-feather="home"></i><span class="menu-title text-truncate">Dashboard</span></a></li>
                 <li class="navigation-header"><span>Otel Yönetimi</span><i data-feather="more-horizontal"></i></li>
-                <li class="nav-item disabled"><a class="d-flex align-items-center" href="#"><i data-feather="layers"></i><span class="menu-title text-truncate">Odalar</span><span class="badge badge-light-secondary rounded-pill ms-auto">Yakında</span></a></li>
-                <li class="nav-item disabled"><a class="d-flex align-items-center" href="#"><i data-feather="calendar"></i><span class="menu-title text-truncate">Rezervasyonlar</span></a></li>
-                <li class="nav-item disabled"><a class="d-flex align-items-center" href="#"><i data-feather="dollar-sign"></i><span class="menu-title text-truncate">Fiyatlar</span></a></li>
+                <li class="nav-item {{ request()->routeIs('admin.rooms.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.rooms.index') }}"><i data-feather="layers"></i><span class="menu-title text-truncate">Odalar</span></a></li>
+                <li class="nav-item {{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.reservations.index') }}"><i data-feather="calendar"></i><span class="menu-title text-truncate">Rezervasyonlar</span></a></li>
                 <li class="navigation-header"><span>İçerik Yönetimi</span><i data-feather="more-horizontal"></i></li>
 
                 {{-- Anasayfa açılır kapanır --}}
@@ -95,7 +94,7 @@
                         <li class="{{ request()->routeIs('admin.amenities.*') ? 'active' : '' }}">
                             <a class="d-flex align-items-center" href="{{ route('admin.amenities.index') }}">
                                 <i data-feather="check-square"></i>
-                                <span class="menu-item text-truncate">Sessiz Olanaklar</span>
+                                <span class="menu-item text-truncate">Olanaklar</span>
                             </a>
                         </li>
                     </ul>
@@ -125,8 +124,41 @@
                         <span class="menu-title text-truncate">Harita & Yakın Yerler</span>
                     </a>
                 </li>
-                <li class="nav-item {{ request()->routeIs('admin.site-settings.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.site-settings.edit') }}"><i data-feather="settings"></i><span class="menu-title text-truncate">Site Ayarları</span></a></li>
+                <li class="nav-item {{ request()->routeIs('admin.reservation-guarantees.*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" href="{{ route('admin.reservation-guarantees.index') }}">
+                        <i data-feather="shield"></i>
+                        <span class="menu-title text-truncate">Rezervasyon Avantajları</span>
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->routeIs('admin.contact.*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" href="{{ route('admin.contact.index') }}">
+                        <i data-feather="phone-call"></i>
+                        <span class="menu-title text-truncate">İletişim Sayfası</span>
+                    </a>
+                </li>
+
+                {{-- Talepler Başlığı --}}
+                <li class="navigation-header"><span>Talepler</span><i data-feather="more-horizontal"></i></li>
+                <li class="nav-item {{ request()->routeIs('admin.contact-messages.*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" href="{{ route('admin.contact-messages.index') }}">
+                        <i data-feather="inbox"></i>
+                        <span class="menu-title text-truncate">İletişim Talepleri</span>
+                        @php
+                            $unreadMsgCount = 0;
+                            try {
+                                if (\Illuminate\Support\Facades\Schema::hasTable('contact_messages')) {
+                                    $unreadMsgCount = \App\Models\ContactMessage::query()->where('is_read', false)->count();
+                                }
+                            } catch (\Throwable) {}
+                        @endphp
+                        @if ($unreadMsgCount > 0)
+                            <span class="badge badge-light-danger rounded-pill ms-auto">{{ $unreadMsgCount }}</span>
+                        @endif
+                    </a>
+                </li>
+
                 <li class="navigation-header"><span>Site</span><i data-feather="more-horizontal"></i></li>
+                <li class="nav-item {{ request()->routeIs('admin.site-settings.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.site-settings.edit') }}"><i data-feather="settings"></i><span class="menu-title text-truncate">Site Ayarları</span></a></li>
                 <li class="nav-item"><a class="d-flex align-items-center" href="{{ route('home') }}" target="_blank"><i data-feather="external-link"></i><span class="menu-title text-truncate">Siteyi Görüntüle</span></a></li>
             </ul>
         </div>

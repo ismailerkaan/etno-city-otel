@@ -30,7 +30,7 @@
             <div class="w-full flex flex-col items-start transition-opacity duration-[1000ms] ease-in-out {{ $loop->first ? 'opacity-100' : 'opacity-0 absolute inset-0 pointer-events-none' }}" data-hero-text>
                 <div class="inline-flex items-center gap-3 px-3.5 py-1.5 bg-surface/20 backdrop-blur-md mb-6">
                     <span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed"></span>
-                    <span class="font-label-sm text-label-sm uppercase tracking-[0.25em] text-on-primary">EtnoCity Otel &amp; Retreat</span>
+                    <span class="font-label-sm text-label-sm uppercase tracking-[0.25em] text-on-primary">EtnoCity Otel</span>
                 </div>
                 <h1 class="font-display-lg text-display-lg-mobile lg:text-display-lg text-on-primary max-w-4xl tracking-tight leading-none mb-6">
                     {{ $slide->translatedTitle() ?: ($siteSetting?->translated('hero_title') ?? 'Zamansız Bir Kaçış, Sizin İçin Tasarlandı') }}
@@ -49,7 +49,7 @@
         {{-- Slide yoksa site settings'ten --}}
         <div class="inline-flex items-center gap-3 px-3.5 py-1.5 bg-surface/20 backdrop-blur-md mb-6">
             <span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed"></span>
-            <span class="font-label-sm text-label-sm uppercase tracking-[0.25em] text-on-primary">EtnoCity Otel &amp; Retreat</span>
+            <span class="font-label-sm text-label-sm uppercase tracking-[0.25em] text-on-primary">EtnoCity Otel</span>
         </div>
         <h1 class="font-display-lg text-display-lg-mobile lg:text-display-lg text-on-primary max-w-4xl tracking-tight leading-none mb-6">
             {{ $siteSetting?->translated('hero_title') ?: 'Zamansız Bir Kaçış, Sizin İçin Tasarlandı' }}
@@ -127,7 +127,7 @@
           </p>
 <div class="pt-4 flex flex-col sm:flex-row items-start sm:items-center gap-8">
 <a class="inline-flex items-center gap-3 font-label-md text-label-md uppercase tracking-[0.24em] text-primary hover:text-secondary group transition-colors" href="#">
-<span>Hikayemizi &amp; Mirasımızı Keşfedin</span>
+<span>EtnoCity’yi Yakından Tanıyın</span>
 <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1.5 transition-transform">arrow_right_alt</span>
 </a>
 <div class="flex items-center gap-3 px-4 py-2 bg-surface-container">
@@ -149,14 +149,53 @@
 <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
 <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
 <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
-<p class="font-headline-sm text-headline-sm text-on-surface">{{ $siteSetting->translated('award_badge_title') ?: '1 Numaralı Sığınak Seçildi' }}</p>
-<p class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider">{{ $siteSetting->translated('award_badge_subtitle') ?: 'Akdeniz Butik Sığınak & Mimarlık Ödülü 2024' }}</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">{{ $siteSetting->translated('award_badge_title') ?: 'Konforlu ve Özenli Konaklama' }}</p>
+<p class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider">{{ $siteSetting->translated('award_badge_subtitle') ?: 'İş ve şehir gezileri için işlevsel çözümler' }}</p>
 </div>
 </div>
 </div>
 </div>
 </section>
 <!-- 3. ROOMS & SUITES (Editorial Showcase) -->
+@if ($homeRoomTypes->isNotEmpty())
+<section class="w-full py-28 bg-surface-container-low" id="odalar">
+<div class="max-w-[1440px] mx-auto px-6 lg:px-12 space-y-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6">
+<div class="space-y-3 max-w-2xl">
+<span class="font-label-md text-label-md uppercase text-secondary tracking-[0.28em] block">Konaklama Birimleri</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Odalarımız</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Konforlu konaklamanız için özenle hazırlanan oda seçeneklerini keşfedin.</p>
+</div>
+<a class="px-5 py-2.5 bg-surface text-on-surface font-label-md text-label-md uppercase tracking-[0.2em] hover:bg-surface-container-highest transition-colors" href="{{ route('reservation.step1') }}">Tüm Odalar ({{ $homeRoomTypes->count() }})</a>
+</div>
+@foreach ($homeRoomTypes as $roomType)
+<article class="bg-surface p-6 lg:p-10 shadow-sm flex flex-col {{ $loop->even ? 'lg:flex-row-reverse' : 'lg:flex-row' }} gap-10 items-stretch transition-shadow duration-300 hover:shadow-xl group">
+<div class="lg:w-7/12 relative overflow-hidden bg-surface-container h-[340px] lg:h-[420px]">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="{{ $roomType->images->firstWhere('is_primary', true)?->alt_text ?: $roomType->name }}" src="{{ $roomType->primaryImageUrl() }}">
+<div class="absolute top-4 left-4 bg-surface/90 backdrop-blur-md px-3 py-1 font-label-sm text-label-sm uppercase tracking-widest text-on-surface">{{ $roomType->translatedName() }}</div>
+</div>
+<div class="lg:w-5/12 flex flex-col justify-between gap-6">
+<div class="space-y-4">
+<div class="flex flex-wrap gap-2">
+@if ($roomType->size_sqm)<span class="px-2.5 py-1 bg-surface-container font-label-sm text-[10px] uppercase text-on-surface-variant tracking-wider">{{ $roomType->size_sqm }} m²</span>@endif
+<span class="px-2.5 py-1 bg-surface-container font-label-sm text-[10px] uppercase text-on-surface-variant tracking-wider">{{ $roomType->max_adults }} Yetişkin · {{ $roomType->max_children }} Çocuk</span>
+@if ($roomType->translatedBedType())<span class="px-2.5 py-1 bg-surface-container font-label-sm text-[10px] uppercase text-on-surface-variant tracking-wider">{{ $roomType->translatedBedType() }}</span>@endif
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-secondary transition-colors">{{ $roomType->translatedName() }}</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">{{ $roomType->translatedDescription() }}</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">@foreach(array_slice($roomType->translatedFeatures(), 0, 4) as $feature)<span class="inline-flex items-center gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-[16px] text-secondary">check_circle</span>{{ $feature }}</span>@endforeach</div>
+</div>
+<div class="pt-6 space-y-4 border-t border-surface-container-high">
+<div class="flex items-baseline gap-3"><span class="font-headline-md text-headline-md text-on-surface">₺{{ number_format((float) $roomType->nightly_price, 0, ',', '.') }}</span><span class="font-body-sm text-body-sm text-on-surface-variant">/ gece</span></div>
+<div class="flex flex-col sm:flex-row gap-3"><a class="flex-1 py-3.5 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary transition-colors font-label-md text-label-md uppercase tracking-[0.2em] text-center" href="{{ route('reservation.step4', $roomType) }}">Oda Seç</a><a class="px-5 py-3.5 bg-surface-container text-on-surface hover:bg-surface-container-highest transition-colors font-label-md text-label-md uppercase tracking-[0.18em] text-center" href="{{ route('reservation.step2', $roomType) }}">Detaylar</a></div>
+</div>
+</div>
+</article>
+@endforeach
+</div>
+</section>
+@endif
+@if (false)
 <section class="w-full py-28 bg-surface-container-low" id="odalar">
 <div class="max-w-[1440px] mx-auto px-6 lg:px-12 space-y-16">
 <!-- Section Header -->
@@ -285,13 +324,14 @@
 </div>
 </div>
 </section>
+@endif
 <!-- 4. CURATED AMENITIES & FEATURES -->
 <section class="w-full py-28 bg-surface">
 <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
 <div class="text-center max-w-2xl mx-auto space-y-3 mb-20">
-<span class="font-label-md text-label-md uppercase text-secondary tracking-[0.28em] block">{{ $siteSetting->translated('amenities_eyebrow') ?: 'Sessiz Olanaklar' }}</span>
-<h2 class="font-headline-lg text-headline-lg text-on-surface">{{ $siteSetting->translated('amenities_title') ?: 'Mimari & Özen' }}</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">{{ $siteSetting->translated('amenities_subtitle') ?: 'Mülkün her boyutu, sakin fiziksel rahatlamayı ve derin, yenileyici uykuyu teşvik etmek için tasarlanmıştır.' }}</p>
+<span class="font-label-md text-label-md uppercase text-secondary tracking-[0.28em] block">{{ $siteSetting->translated('amenities_eyebrow') ?: 'Konaklamanızı Kolaylaştıranlar' }}</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">{{ $siteSetting->translated('amenities_title') ?: 'İhtiyacınız Olan Her Şey' }}</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">{{ $siteSetting->translated('amenities_subtitle') ?: 'Dinlenmek, çalışmak ve güne hazır başlamak için gerekli hizmetleri bir araya getiriyoruz.' }}</p>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 @forelse ($amenities as $amenity)
@@ -377,8 +417,8 @@
 <div class="max-w-[1440px] mx-auto px-6 lg:px-12 space-y-12">
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
 <div class="space-y-3">
-<span class="font-label-md text-label-md uppercase text-secondary tracking-[0.28em] block">{{ $siteSetting?->translated('gallery_eyebrow') ?: (app()->isLocale('en') ? 'Visual Archive' : 'Görsel Arşiv') }}</span>
-<h2 class="font-headline-lg text-headline-lg text-on-surface">{{ $siteSetting?->translated('gallery_title') ?: (app()->isLocale('en') ? 'Atmospheric Moments' : 'Atmosferik Anlar') }}</h2>
+<span class="font-label-md text-label-md uppercase text-secondary tracking-[0.28em] block">{{ $siteSetting?->translated('gallery_eyebrow') ?: (app()->isLocale('en') ? 'Around the Hotel' : 'Otelden Kareler') }}</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">{{ $siteSetting?->translated('gallery_title') ?: (app()->isLocale('en') ? 'Take a Closer Look at Your Stay' : 'Konaklamanızı Yakından Görün') }}</h2>
 </div>
 <a href="{{ route('gallery') }}" class="inline-flex items-center gap-3 px-5 py-2.5 bg-surface-container text-on-surface hover:bg-primary hover:text-on-primary font-label-sm text-label-sm uppercase tracking-wider transition-all duration-300 group">
 <span>{{ app()->isLocale('en') ? 'Explore Full Gallery' : 'Tüm Galeriyi İncele' }}</span>
@@ -634,11 +674,15 @@
       <span class="font-label-md text-label-md uppercase text-secondary tracking-[0.28em] block">{{ $eyebrow }}</span>
     @endif
     <h2 class="font-headline-lg text-headline-lg text-on-surface">
-      {{ $siteSetting?->translated('location_title') ?: (app()->isLocale('en') ? 'Secluded Yet Effortlessly Accessible' : 'Sakin Ama Kolayca Ulaşılabilir') }}
+      {{ $siteSetting?->translated('location_title') ?: (app()->isLocale('en') ? 'Our Location' : 'Konumumuz') }}
     </h2>
     @if ($desc = $siteSetting?->translated('location_description'))
       <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
         {{ $desc }}
+      </p>
+    @else
+      <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+        {{ app()->isLocale('en') ? 'You can easily reach our hotel by getting directions.' : 'Yol tarifi alarak otelimize kolayca ulaşabilirsiniz.' }}
       </p>
     @endif
   </div>
@@ -665,6 +709,15 @@
         </div>
       @endforeach
     @endif
+
+    {{-- Yol Tarifi Butonu --}}
+    <div class="pt-2">
+      <a href="{{ $siteSetting?->directionsUrl() }}" target="_blank" rel="noopener noreferrer"
+         class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary transition-colors font-label-sm text-label-sm uppercase tracking-[0.2em] shadow-sm">
+        <span class="material-symbols-outlined text-[18px]">directions</span>
+        <span>{{ app()->isLocale('en') ? 'Get Directions on Google Maps' : 'Google Haritalar\'da Yol Tarifi Al' }}</span>
+      </a>
+    </div>
   </div>
 </div>
 </div>

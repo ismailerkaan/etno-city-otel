@@ -54,20 +54,20 @@
                     {{-- Başlık (TR) --}}
                     <div class="col-md-4 col-12 mb-1">
                         <label class="form-label fw-bold" for="title">Nokta / Yer Adı (TR) <span class="text-danger">*</span></label>
-                        <input class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $place->title) }}" placeholder="Örn: Bodrum-Milas Airport (BJV)" required>
+                        <input class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $place->title) }}" placeholder="Örn: Şehir Merkezi" required>
                         @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
                     {{-- Başlık (EN) --}}
                     <div class="col-md-5 col-12 mb-1">
                         <label class="form-label fw-bold text-info" for="title_en">Place Name (EN)</label>
-                        <input class="form-control" id="title_en" name="title_en" value="{{ old('title_en', $place->title_en) }}" placeholder="Ex: Bodrum-Milas Airport (BJV)">
+                        <input class="form-control" id="title_en" name="title_en" value="{{ old('title_en', $place->title_en) }}" placeholder="Ex: City Centre">
                     </div>
 
                     {{-- Ulaşım Açıklaması (TR) --}}
                     <div class="col-md-5 col-12 mb-1">
                         <label class="form-label fw-bold" for="description">Ulaşım / Süre Açıklaması (TR)</label>
-                        <input class="form-control" id="description" name="description" value="{{ old('description', $place->description) }}" placeholder="Örn: Özel Şoför: 35 dk · Doğrudan Helikopter: 10 dk">
+                        <input class="form-control" id="description" name="description" value="{{ old('description', $place->description) }}" placeholder="Örn: Toplu taşıma ile kolay erişim">
                     </div>
 
                     {{-- Ulaşım Açıklaması (EN) --}}

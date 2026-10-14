@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
 
 #[Fillable([
     'hotel_name', 'phone', 'email', 'address', 'logo_url', 'instagram_url', 'whatsapp_url',
@@ -27,16 +30,69 @@ use Illuminate\Database\Eloquent\Model;
     'location_map_embed_url', 'location_coordinates', 'location_address', 'location_pin_label',
     'newsletter_title', 'newsletter_text',
     'newsletter_title_en', 'newsletter_text_en',
+    'guarantees_eyebrow', 'guarantees_title',
+    'guarantees_eyebrow_en', 'guarantees_title_en',
+    'contact_eyebrow', 'contact_title', 'contact_subtitle',
+    'contact_eyebrow_en', 'contact_title_en', 'contact_subtitle_en',
+    'contact_concierge_hours', 'contact_concierge_hours_en',
+    'contact_phone_concierge', 'contact_email_reservations',
 ])]
 class SiteSetting extends Model
 {
     public function translated(string $attribute): mixed
     {
-        if (app()->getLocale() === 'en') {
-            return $this->getAttribute($attribute.'_en') ?: $this->getAttribute($attribute);
+        $value = app()->getLocale() === 'en'
+            ? ($this->getAttribute($attribute.'_en') ?: $this->getAttribute($attribute))
+            : $this->getAttribute($attribute);
+
+        if ($attribute === 'location_title' && ($value === 'Sakin Ama Kolayca Ulaşılabilir' || $value === 'Yarımadanın Kalbinde, Sakin ve Ayrıcalıklı Bir Konum' || empty($value))) {
+            return app()->getLocale() === 'en'
+                ? 'Our Location'
+                : 'Konumumuz';
         }
 
-        return $this->getAttribute($attribute);
+        if ($attribute === 'location_description' && (empty($value) || str_contains((string) $value, "Cape Artemis'in el değmemiş") || str_contains((string) $value, "Bodrum'un en dingin"))) {
+            return app()->getLocale() === 'en'
+                ? 'You can easily reach our hotel by getting directions.'
+                : 'Yol tarifi alarak otelimize kolayca ulaşabilirsiniz.';
+        }
+
+        return $value;
+    }
+
+    public function directionsUrl(): string
+    {
+        // 1. Koordinat alanı kontrolü (örn: "37.122889, 27.278917" veya derece formatı)
+        if (! empty($this->location_coordinates)) {
+            $coords = trim((string) $this->location_coordinates);
+            if (preg_match('/([0-9\.\-]+)\s*,\s*([0-9\.\-]+)/', $coords, $m)) {
+                return 'https://www.google.com/maps/dir/?api=1&destination='.$m[1].','.$m[2];
+            }
+
+            return 'https://www.google.com/maps/dir/?api=1&destination='.urlencode($coords);
+        }
+
+        // 2. Map embed URL içinden koordinat çıkarma
+        if (! empty($this->location_map_embed_url)) {
+            $embed = (string) $this->location_map_embed_url;
+            if (preg_match('/!3d([0-9\.\-]+)!2d([0-9\.\-]+)/', $embed, $m)) {
+                return 'https://www.google.com/maps/dir/?api=1&destination='.$m[1].','.$m[2];
+            }
+            if (preg_match('/!2d([0-9\.\-]+)!3d([0-9\.\-]+)/', $embed, $m)) {
+                return 'https://www.google.com/maps/dir/?api=1&destination='.$m[2].','.$m[1];
+            }
+            if (preg_match('/[?&](?:q|ll)=([0-9\.\-]+),([0-9\.\-]+)/', $embed, $m)) {
+                return 'https://www.google.com/maps/dir/?api=1&destination='.$m[1].','.$m[2];
+            }
+            if (preg_match('/[?&]query=([^&"]+)/', $embed, $m)) {
+                return 'https://www.google.com/maps/dir/?api=1&destination='.$m[1];
+            }
+        }
+
+        // 3. Adres veya otel adı
+        $destination = trim(($this->hotel_name ?? 'EtnoCity').' '.($this->address ?: 'Bodrum Muğla'));
+
+        return 'https://www.google.com/maps/dir/?api=1&destination='.urlencode($destination);
     }
 
     public function logoUrl(): ?string
@@ -77,6 +133,40 @@ class SiteSetting extends Model
         }
 
         return $raw;
+    }
+
+    /**
+     * Ensure contact columns exist in site_settings table.
+     */
+    public static function ensureContactColumnsExist(): void
+    {
+        try {
+            if (! Schema::hasColumn('site_settings', 'contact_eyebrow')) {
+                try {
+                    Artisan::call('migrate', ['--force' => true]);
+                } catch (\Throwable) {
+                }
+
+                if (! Schema::hasColumn('site_settings', 'contact_eyebrow')) {
+                    Schema::table('site_settings', function (Blueprint $table) {
+                        if (! Schema::hasColumn('site_settings', 'contact_eyebrow')) {
+                            $table->text('contact_eyebrow')->nullable();
+                            $table->text('contact_title')->nullable();
+                            $table->text('contact_subtitle')->nullable();
+                            $table->text('contact_eyebrow_en')->nullable();
+                            $table->text('contact_title_en')->nullable();
+                            $table->text('contact_subtitle_en')->nullable();
+                            $table->text('contact_concierge_hours')->nullable();
+                            $table->text('contact_concierge_hours_en')->nullable();
+                            $table->text('contact_phone_concierge')->nullable();
+                            $table->text('contact_email_reservations')->nullable();
+                        }
+                    });
+                }
+            }
+        } catch (\Throwable) {
+            // Silently continue
+        }
     }
 
     protected function casts(): array

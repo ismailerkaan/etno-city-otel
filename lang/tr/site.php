@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'rooms' => 'Odalar & Süitler',
+    'rooms' => 'Odalar',
     'experiences' => 'Etkinlikler',
-    'wellness' => 'Sağlık & Spa',
+    'wellness' => 'Olanaklar',
     'gallery' => 'Galeri',
     'story' => 'Hikayemiz',
     'contact' => 'İletişim',
     'reserve' => 'Rezervasyon Yap',
-    'private_newsletter' => 'Özel Bülten',
+    'private_newsletter' => 'Bizden Haberler',
     'subscribe' => 'Abone Ol',
     'email_placeholder' => 'E-posta adresiniz',
     'menu' => 'Menü',
@@ -17,5 +17,5 @@ return [
     'rights' => 'Tüm hakları saklıdır.',
     'privacy' => 'Gizlilik',
     'terms' => 'Konaklama Koşulları',
-    'private_suites' => 'Özel Süitler',
+    'private_suites' => 'Oda Seçeneği',
 ];

@@ -8,6 +8,7 @@ use App\Models\GalleryCategory;
 use App\Models\GalleryImage;
 use App\Models\HeroSlide;
 use App\Models\NearbyPlace;
+use App\Models\RoomType;
 use App\Models\SiteSetting;
 use App\Models\Testimonial;
 use Illuminate\View\View;
@@ -28,6 +29,7 @@ class HomeController extends Controller
             'galleryImages' => GalleryImage::query()->active()->with('category')->orderBy('sort_order')->orderBy('id')->limit(5)->get(),
             'testimonials' => Testimonial::query()->active()->orderBy('sort_order')->orderBy('id')->get(),
             'nearbyPlaces' => NearbyPlace::query()->active()->orderBy('sort_order')->orderBy('id')->get(),
+            'homeRoomTypes' => RoomType::query()->active()->where('show_on_home', true)->with('images')->orderBy('sort_order')->orderBy('id')->get(),
         ]);
     }
 }

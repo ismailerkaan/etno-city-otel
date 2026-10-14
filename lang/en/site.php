@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'rooms' => 'Rooms & Suites',
+    'rooms' => 'Rooms',
     'experiences' => 'Events',
-    'wellness' => 'Wellness & Spa',
+    'wellness' => 'Amenities',
     'gallery' => 'Gallery',
     'story' => 'Our Story',
     'contact' => 'Contact',
     'reserve' => 'Reserve Stay',
-    'private_newsletter' => 'Private Dispatch',
+    'private_newsletter' => 'Hotel Updates',
     'subscribe' => 'Subscribe',
     'email_placeholder' => 'Your email address',
     'menu' => 'Navigation',
@@ -17,5 +17,5 @@ return [
     'rights' => 'All rights reserved.',
     'privacy' => 'Privacy',
     'terms' => 'Terms of Stay',
-    'private_suites' => 'Private Suites',
+    'private_suites' => 'Room Types',
 ];
