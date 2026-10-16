@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Schema;
 #[Fillable([
     'hotel_name', 'phone', 'email', 'address', 'logo_url', 'instagram_url', 'whatsapp_url',
     'facebook_url', 'youtube_url', 'tripadvisor_url',
+    'google_analytics_measurement_id', 'google_search_console_verification',
     'hero_eyebrow', 'hero_title', 'hero_subtitle', 'hero_image_url',
     'hero_eyebrow_en', 'hero_title_en', 'hero_subtitle_en',
     'about_eyebrow', 'about_title', 'about_primary_text', 'about_secondary_text', 'about_image_url',

@@ -133,4 +133,35 @@ class SiteSettingsTest extends TestCase
         $response->assertDontSee('https://facebook.com', false);
         $response->assertDontSee('https://tripadvisor.com', false);
     }
+
+    public function test_admin_can_enable_google_integrations_for_public_pages(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+
+        $this->actingAs($admin)->put(route('admin.site-settings.update'), [
+            'hotel_name' => 'EtnoCity Otel',
+            'google_analytics_measurement_id' => 'G-ABC123XYZ9',
+            'google_search_console_verification' => 'search-console_token-123',
+        ])->assertSessionHasNoErrors()->assertRedirect();
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('name="google-site-verification" content="search-console_token-123"', false)
+            ->assertSee('https://www.googletagmanager.com/gtag/js?id=G-ABC123XYZ9', false)
+            ->assertSee("gtag('config', 'G-ABC123XYZ9');", false);
+    }
+
+    public function test_google_integration_fields_reject_invalid_code(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+
+        $this->actingAs($admin)->put(route('admin.site-settings.update'), [
+            'hotel_name' => 'EtnoCity Otel',
+            'google_analytics_measurement_id' => '<script>alert(1)</script>',
+            'google_search_console_verification' => '"><script>alert(1)</script>',
+        ])->assertSessionHasErrors([
+            'google_analytics_measurement_id',
+            'google_search_console_verification',
+        ]);
+    }
 }

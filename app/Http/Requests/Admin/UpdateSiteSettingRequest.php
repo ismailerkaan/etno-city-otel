@@ -34,6 +34,8 @@ class UpdateSiteSettingRequest extends FormRequest
             'facebook_url' => ['nullable', 'string', 'max:2048'],
             'youtube_url' => ['nullable', 'string', 'max:2048'],
             'tripadvisor_url' => ['nullable', 'string', 'max:2048'],
+            'google_analytics_measurement_id' => ['nullable', 'string', 'max:32', 'regex:/^G-[A-Z0-9]+$/i'],
+            'google_search_console_verification' => ['nullable', 'string', 'max:255', 'regex:/^[A-Za-z0-9_-]+$/'],
             'newsletter_title' => ['nullable', 'string', 'max:255'],
             'newsletter_title_en' => ['nullable', 'string', 'max:255'],
             'newsletter_text' => ['nullable', 'string', 'max:2000'],

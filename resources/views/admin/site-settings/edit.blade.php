@@ -100,6 +100,50 @@
             </div>
         </div>
 
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h4 class="card-title mb-25">Google Entegrasyonları</h4>
+                    <p class="text-muted mb-0">Kodları kaydettiğinizde gerekli etiketler sitenin tüm sayfalarında otomatik olarak çalışır.</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6 mb-1">
+                        <label class="form-label fw-bold" for="google_analytics_measurement_id">Google Analytics 4 Ölçüm Kimliği</label>
+                        <input
+                            class="form-control @error('google_analytics_measurement_id') is-invalid @enderror"
+                            id="google_analytics_measurement_id"
+                            name="google_analytics_measurement_id"
+                            value="{{ old('google_analytics_measurement_id', $siteSetting->google_analytics_measurement_id) }}"
+                            placeholder="G-XXXXXXXXXX"
+                            autocomplete="off"
+                        >
+                        <div class="form-text">Analytics &gt; Veri Akışları &gt; Web bölümündeki <code>G-</code> ile başlayan kimliği girin.</div>
+                        @error('google_analytics_measurement_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-lg-6 mb-1">
+                        <label class="form-label fw-bold" for="google_search_console_verification">Search Console Doğrulama Kodu</label>
+                        <input
+                            class="form-control @error('google_search_console_verification') is-invalid @enderror"
+                            id="google_search_console_verification"
+                            name="google_search_console_verification"
+                            value="{{ old('google_search_console_verification', $siteSetting->google_search_console_verification) }}"
+                            placeholder="Doğrulama kodu"
+                            autocomplete="off"
+                        >
+                        <div class="form-text"><code>google-site-verification</code> meta etiketindeki yalnızca <code>content</code> değerini girin.</div>
+                        @error('google_search_console_verification')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                </div>
+                <div class="alert alert-primary mb-0" role="alert">
+                    <div class="alert-body">
+                        Alanı boş bırakırsanız ilgili Google entegrasyonu devre dışı kalır. Değerler kaydedildiği anda ayrıca kod düzenlemeniz gerekmez.
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
         <div class="card">
