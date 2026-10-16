@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dashboard') - EtnoCity Otel</title>
-    <link rel="icon" type="image/png" href="{{ asset('favicon-key.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon-etnocity.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('vendor/vuexy/app-assets/vendors/css/vendors.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/vuexy/app-assets/css/bootstrap.css') }}">
