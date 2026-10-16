@@ -34,7 +34,8 @@ class EventContentTest extends TestCase
             ->assertSee('Toplantı Organizasyonları')
             ->assertSee('Kurumsal Etkinlikler')
             ->assertSee('Toplu Yemek Organizasyonları')
-            ->assertSee('Özel Gün ve Haftalara Ait Organizasyonlar');
+            ->assertSee('Özel Gün ve Haftalara Ait Organizasyonlar')
+            ->assertDontSee('cloneNode', false);
     }
 
     public function test_event_detail_uses_city_hotel_organization_language_and_contact_action(): void

@@ -915,42 +915,41 @@
         if (e.key === 'ArrowRight') nextHomeImage();
       });
 
-      // Events Carousel Controls (Infinite Continuous Loop)
+      // Events Carousel Controls
       const eventsCarousel = document.getElementById('eventsCarousel');
       const prevEventsBtn = document.getElementById('prevEventsBtn');
       const nextEventsBtn = document.getElementById('nextEventsBtn');
 
       if (eventsCarousel) {
         const cards = Array.from(eventsCarousel.querySelectorAll('.snap-start'));
-        
-        // Sonsuz döngü (infinite seamless loop) için kartları çoğalt
-        if (cards.length > 0) {
-          cards.forEach(card => {
-            const clone = card.cloneNode(true);
-            eventsCarousel.appendChild(clone);
-          });
-        }
-
         let isPaused = false;
-        let speed = 0.9; // Sürekli akış hızı (piksel / frame)
-        let animationFrameId;
+        const getCardWidth = () => {
+          const first = eventsCarousel.querySelector('.snap-start');
+          return first ? first.offsetWidth + 24 : 420;
+        };
 
-        function autoScroll() {
-          if (!isPaused) {
-            eventsCarousel.scrollLeft += speed;
-            const halfWidth = eventsCarousel.scrollWidth / 2;
-            if (eventsCarousel.scrollLeft >= halfWidth) {
-              eventsCarousel.scrollLeft = 0;
-            } else if (eventsCarousel.scrollLeft <= 0 && speed < 0) {
-              eventsCarousel.scrollLeft = halfWidth;
-            }
+        const scrollEvents = (direction) => {
+          const maximumScroll = eventsCarousel.scrollWidth - eventsCarousel.clientWidth;
+
+          if (direction > 0 && eventsCarousel.scrollLeft >= maximumScroll - 8) {
+            eventsCarousel.scrollTo({ left: 0, behavior: 'smooth' });
+            return;
           }
-          animationFrameId = requestAnimationFrame(autoScroll);
+
+          if (direction < 0 && eventsCarousel.scrollLeft <= 8) {
+            eventsCarousel.scrollTo({ left: maximumScroll, behavior: 'smooth' });
+            return;
+          }
+
+          eventsCarousel.scrollBy({ left: direction * getCardWidth(), behavior: 'smooth' });
+        };
+
+        if (cards.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          window.setInterval(() => {
+            if (!isPaused) scrollEvents(1);
+          }, 4500);
         }
 
-        animationFrameId = requestAnimationFrame(autoScroll);
-
-        // Kullanıcı üzerine gelince veya dokununca duraklat
         eventsCarousel.addEventListener('mouseenter', () => { isPaused = true; });
         eventsCarousel.addEventListener('mouseleave', () => { isPaused = false; });
         eventsCarousel.addEventListener('touchstart', () => { isPaused = true; }, { passive: true });
@@ -958,16 +957,10 @@
           setTimeout(() => { isPaused = false; }, 1500);
         });
 
-        // Butonlarla manuel kaydırma
-        const getCardWidth = () => {
-          const first = eventsCarousel.querySelector('.snap-start');
-          return first ? first.offsetWidth + 24 : 420;
-        };
-
         if (prevEventsBtn) {
           prevEventsBtn.addEventListener('click', () => {
             isPaused = true;
-            eventsCarousel.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+            scrollEvents(-1);
             setTimeout(() => { isPaused = false; }, 2000);
           });
         }
@@ -975,7 +968,7 @@
         if (nextEventsBtn) {
           nextEventsBtn.addEventListener('click', () => {
             isPaused = true;
-            eventsCarousel.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
+            scrollEvents(1);
             setTimeout(() => { isPaused = false; }, 2000);
           });
         }
