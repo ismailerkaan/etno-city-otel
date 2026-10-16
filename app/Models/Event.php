@@ -73,7 +73,7 @@ class Event extends Model
             return $this->button_text_en;
         }
 
-        return $this->button_text ?: 'Deneyimi Rezerve Et';
+        return $this->button_text ?: 'Organizasyon Teklifi Al';
     }
 
     protected function casts(): array

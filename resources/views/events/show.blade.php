@@ -39,7 +39,7 @@
                 <div class="lg:col-span-8 space-y-8">
                     <div class="space-y-4">
                         <span class="font-label-md text-label-md uppercase text-secondary tracking-[0.28em] block">
-                            {{ app()->isLocale('en') ? 'Bespoke Chapter & Experience' : 'Özel Deneyim Detayı' }}
+                            {{ app()->isLocale('en') ? 'Event Details' : 'Organizasyon Detayları' }}
                         </span>
                         <h2 class="font-headline-lg text-headline-lg text-on-surface">
                             {{ $event->translatedTitle() }}
@@ -54,24 +54,24 @@
                         @endif
                     </div>
 
-                    {{-- Deneyim Ayrıcalıkları --}}
+                    {{-- Organizasyon Hizmetleri --}}
                     <div class="pt-8 border-t border-outline-variant grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div class="flex items-start gap-4 p-5 bg-surface-container-low border border-outline-variant/30">
-                            <span class="material-symbols-outlined text-secondary text-[28px]">lock</span>
+                            <span class="material-symbols-outlined text-secondary text-[28px]">event_available</span>
                             <div class="space-y-1">
-                                <h4 class="font-headline-sm text-title-md text-on-surface">{{ app()->isLocale('en') ? 'Exclusive & Private' : 'Tamamen Kişiye Özel' }}</h4>
+                                <h4 class="font-headline-sm text-title-md text-on-surface">{{ app()->isLocale('en') ? 'A Plan Tailored to You' : 'İhtiyacınıza Uygun Planlama' }}</h4>
                                 <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                    {{ app()->isLocale('en') ? 'Curated exclusively for our residing guests with bespoke attention.' : 'Yalnızca otel misafirlerimize özel olarak, kişisel ritminize göre organize edilir.' }}
+                                    {{ app()->isLocale('en') ? 'The room layout, service flow and menu are planned around your event.' : 'Salon düzeni, servis akışı ve menü organizasyonunuzun ihtiyaçlarına göre hazırlanır.' }}
                                 </p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-4 p-5 bg-surface-container-low border border-outline-variant/30">
-                            <span class="material-symbols-outlined text-secondary text-[28px]">concierge</span>
+                            <span class="material-symbols-outlined text-secondary text-[28px]">support_agent</span>
                             <div class="space-y-1">
-                                <h4 class="font-headline-sm text-title-md text-on-surface">{{ app()->isLocale('en') ? 'Dedicated Concierge' : '7/24 Butler & Concierge' }}</h4>
+                                <h4 class="font-headline-sm text-title-md text-on-surface">{{ app()->isLocale('en') ? 'Dedicated Event Team' : 'Deneyimli Organizasyon Ekibi' }}</h4>
                                 <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                    {{ app()->isLocale('en') ? 'Our peninsula concierge coordinates all details seamlessly.' : 'Tüm detaylar ve rezervasyon saatleri özel concierge ekibimiz tarafından koordine edilir.' }}
+                                    {{ app()->isLocale('en') ? 'A dedicated team coordinates preparation, technical needs and service.' : 'Hazırlık, teknik ihtiyaçlar ve servis süreci tek ekip tarafından koordine edilir.' }}
                                 </p>
                             </div>
                         </div>
@@ -83,19 +83,19 @@
                     <div class="bg-surface-container-low p-8 border border-outline-variant/40 space-y-6 shadow-sm">
                         <div class="space-y-2">
                             <span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-secondary block">
-                                {{ app()->isLocale('en') ? 'Experience Reservation' : 'Deneyim Rezervasyonu' }}
+                                {{ app()->isLocale('en') ? 'Event Request' : 'Organizasyon Talebi' }}
                             </span>
                             <h3 class="font-headline-md text-headline-md text-on-surface">
-                                {{ app()->isLocale('en') ? 'Plan Your Journey' : 'Deneyiminizi Planlayın' }}
+                                {{ app()->isLocale('en') ? 'Let Us Plan Your Event' : 'Organizasyonunuzu Birlikte Planlayalım' }}
                             </h3>
                             <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                                {{ app()->isLocale('en') ? 'This bespoke chapter can be reserved alongside your stay or arranged directly with our concierge desk.' : 'Bu özel deneyimi konaklamanıza dahil etmek veya detaylı bilgi almak için bizimle iletişime geçebilirsiniz.' }}
+                                {{ app()->isLocale('en') ? 'Share your date, guest count and requirements with us for a tailored proposal.' : 'Tarih, katılımcı sayısı ve ihtiyaçlarınızı paylaşın; size özel organizasyon teklifimizi hazırlayalım.' }}
                             </p>
                         </div>
 
                         <div class="space-y-3 pt-2">
-                            <a href="{{ route('reservation.step1') }}" class="w-full block py-4 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary text-center font-label-md text-label-md uppercase tracking-[0.22em] transition-all duration-300 shadow-sm">
-                                {{ app()->isLocale('en') ? 'Reserve Stay & Experience' : 'Konaklama ile Birlikte Rezerve Et' }}
+                            <a href="{{ $event->button_url !== '#' ? $event->button_url : route('contact') }}" class="w-full block py-4 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary text-center font-label-md text-label-md uppercase tracking-[0.22em] transition-all duration-300 shadow-sm">
+                                {{ $event->translatedButtonText() }}
                             </a>
 
                             @if ($siteSetting?->phone)
@@ -108,7 +108,7 @@
 
                         <div class="pt-4 border-t border-outline-variant/40 text-center">
                             <span class="font-label-sm text-[11px] uppercase tracking-wider text-on-surface-variant block">
-                                {{ app()->isLocale('en') ? 'EtnoCity Peninsula Butler Service' : 'EtnoCity Özel Butler Hizmeti' }}
+                                {{ app()->isLocale('en') ? 'EtnoCity Event Coordination' : 'EtnoCity Organizasyon Ekibi' }}
                             </span>
                         </div>
                     </div>
@@ -118,21 +118,21 @@
         </div>
     </section>
 
-    {{-- 3. Diğer Deneyimler --}}
+    {{-- 3. Diğer Organizasyonlar --}}
     @if ($otherEvents->isNotEmpty())
         <section class="w-full py-28 lg:py-36 bg-surface-container-high border-t border-outline-variant/30">
             <div class="max-w-[1440px] mx-auto px-6 lg:px-12 space-y-16">
                 <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-outline-variant/20">
                     <div class="space-y-2">
                         <span class="font-label-md text-label-md uppercase text-secondary tracking-[0.28em] block">
-                            {{ app()->isLocale('en') ? 'More Experiences' : 'Diğer Deneyimler' }}
+                            {{ app()->isLocale('en') ? 'More Events' : 'Diğer Organizasyonlar' }}
                         </span>
                         <h3 class="font-headline-lg text-headline-lg text-on-surface">
-                            {{ app()->isLocale('en') ? 'Discover Beyond' : 'Keşfetmeye Devam Edin' }}
+                            {{ app()->isLocale('en') ? 'Explore Other Options' : 'Diğer Seçenekleri İnceleyin' }}
                         </h3>
                     </div>
                     <p class="font-body-sm text-body-sm text-on-surface-variant max-w-md mb-1">
-                        {{ app()->isLocale('en') ? 'Explore our other curated bespoke chapters and private journeys across Cape Artemis.' : 'Cape Artemis yarımadasında sizin için özenle tasarladığımız diğer ayrıcalıklı anları keşfedin.' }}
+                        {{ app()->isLocale('en') ? 'Explore other event formats that can be tailored to your guest count and needs.' : 'Katılımcı sayınıza ve ihtiyaçlarınıza göre şekillendirilebilen diğer organizasyon seçeneklerini inceleyin.' }}
                     </p>
                 </div>
 

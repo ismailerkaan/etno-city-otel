@@ -8,7 +8,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <h4 class="card-title text-primary"><i data-feather="type" class="me-50"></i> Anasayfa Bölüm Başlığı</h4>
-                <p class="card-text text-muted mb-0">Anasayfadaki "Villanın Ötesinde / Özel Deneyimler" alanının başlık ve açıklama metinleri.</p>
+                <p class="card-text text-muted mb-0">Anasayfadaki organizasyon alanının başlık ve açıklama metinleri.</p>
             </div>
         </div>
         <div class="card-body">
@@ -19,11 +19,11 @@
                     {{-- Türkçe --}}
                     <div class="col-md-6 mb-1">
                         <label class="form-label fw-bold" for="events_eyebrow">Üst Etiket (TR)</label>
-                        <input class="form-control" id="events_eyebrow" name="events_eyebrow" value="{{ old('events_eyebrow', $siteSetting->events_eyebrow) }}" placeholder="Örn: Villanın Ötesinde">
+                        <input class="form-control" id="events_eyebrow" name="events_eyebrow" value="{{ old('events_eyebrow', $siteSetting->events_eyebrow) }}" placeholder="Örn: EtnoCity Organizasyon">
                     </div>
                     <div class="col-md-6 mb-1">
                         <label class="form-label fw-bold" for="events_title">Ana Başlık (TR)</label>
-                        <input class="form-control" id="events_title" name="events_title" value="{{ old('events_title', $siteSetting->events_title) }}" placeholder="Örn: Özel Deneyimler" required>
+                        <input class="form-control" id="events_title" name="events_title" value="{{ old('events_title', $siteSetting->events_title) }}" placeholder="Örn: Şehrin Merkezinde Kusursuz Organizasyonlar" required>
                     </div>
                     <div class="col-12 mb-2">
                         <label class="form-label" for="events_subtitle">Açıklama (TR)</label>
@@ -33,11 +33,11 @@
                     {{-- İngilizce --}}
                     <div class="col-md-6 mb-1">
                         <label class="form-label fw-bold text-info" for="events_eyebrow_en">Eyebrow (EN)</label>
-                        <input class="form-control" id="events_eyebrow_en" name="events_eyebrow_en" value="{{ old('events_eyebrow_en', $siteSetting->events_eyebrow_en) }}" placeholder="Ex: Beyond the Villa">
+                        <input class="form-control" id="events_eyebrow_en" name="events_eyebrow_en" value="{{ old('events_eyebrow_en', $siteSetting->events_eyebrow_en) }}" placeholder="Ex: EtnoCity Events">
                     </div>
                     <div class="col-md-6 mb-1">
                         <label class="form-label fw-bold text-info" for="events_title_en">Title (EN)</label>
-                        <input class="form-control" id="events_title_en" name="events_title_en" value="{{ old('events_title_en', $siteSetting->events_title_en) }}" placeholder="Ex: Bespoke Chapters">
+                        <input class="form-control" id="events_title_en" name="events_title_en" value="{{ old('events_title_en', $siteSetting->events_title_en) }}" placeholder="Ex: Seamless Events in the Heart of the City">
                     </div>
                     <div class="col-12 mb-2">
                         <label class="form-label text-info" for="events_subtitle_en">Subtitle (EN)</label>
@@ -56,7 +56,7 @@
     {{-- 2. Etkinlikler Başlığı ve Yeni Ekle Butonu --}}
     <div class="d-flex justify-content-between align-items-center mb-2">
         <div>
-            <h4 class="mb-25">Tüm Etkinlikler & Deneyimler ({{ $events->count() }})</h4>
+            <h4 class="mb-25">Tüm Etkinlik ve Organizasyonlar ({{ $events->count() }})</h4>
             <span class="text-muted small">Anasayfada yayınlanmasını istediğiniz etkinliklerin <strong>"Anasayfada Yayınla"</strong> seçeneğini aktif edebilirsiniz.</span>
         </div>
         <a class="btn btn-success btn-lg shadow" href="{{ route('admin.events.create') }}">

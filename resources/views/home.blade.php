@@ -354,27 +354,27 @@
 </div>
 </div>
 </section>
-<!-- 5. BESPOKE EXPERIENCES -->
+<!-- 5. CITY HOTEL EVENTS -->
 <section class="w-full py-28 bg-surface-container-high" id="etkinlikler">
 <div class="max-w-[1440px] mx-auto px-6 lg:px-12 space-y-16">
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
 <div class="space-y-3 max-w-xl">
-<span class="font-label-md text-label-md uppercase text-secondary tracking-[0.28em] block">{{ $siteSetting->translated('events_eyebrow') ?: 'Villanın Ötesinde' }}</span>
-<h2 class="font-headline-lg text-headline-lg text-on-surface">{{ $siteSetting->translated('events_title') ?: 'Özel Deneyimler' }}</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">{{ $siteSetting->translated('events_subtitle') ?: 'Her deneyim özel olarak tasarlanmış, aceleye getirilmeden ve değişen gün ışığıyla senkronize edilmiştir.' }}</p>
+<span class="font-label-md text-label-md uppercase text-secondary tracking-[0.28em] block">{{ $siteSetting->translated('events_eyebrow') ?: (app()->isLocale('en') ? 'EtnoCity Events' : 'EtnoCity Organizasyon') }}</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">{{ $siteSetting->translated('events_title') ?: (app()->isLocale('en') ? 'Seamless Events in the Heart of the City' : 'Şehrin Merkezinde Kusursuz Organizasyonlar') }}</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">{{ $siteSetting->translated('events_subtitle') ?: (app()->isLocale('en') ? 'Flexible spaces, attentive service and an experienced team for every gathering.' : 'Her buluşma için esnek salonlar, özenli servis ve deneyimli bir organizasyon ekibi.') }}</p>
 </div>
 <div class="flex items-center gap-6">
 @if ($events->isNotEmpty())
 <a class="font-label-md text-label-md uppercase tracking-[0.22em] text-primary hover:text-secondary flex items-center gap-2" href="#">
-<span>Tüm {{ $events->count() }} Deneyimi Görüntüle</span>
+<span>{{ app()->isLocale('en') ? 'View All '.$events->count().' Events' : 'Tüm '.$events->count().' Organizasyonu Görüntüle' }}</span>
 <span class="material-symbols-outlined text-[18px]">east</span>
 </a>
 {{-- Carousel İleri / Geri Butonları --}}
 <div class="hidden sm:flex items-center gap-2">
-<button id="prevEventsBtn" type="button" class="w-11 h-11 rounded-full border border-primary/20 flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-all duration-300 shadow-sm" aria-label="Önceki Deneyim">
+<button id="prevEventsBtn" type="button" class="w-11 h-11 rounded-full border border-primary/20 flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-all duration-300 shadow-sm" aria-label="Önceki Organizasyon">
     <span class="material-symbols-outlined text-[20px]">arrow_back</span>
 </button>
-<button id="nextEventsBtn" type="button" class="w-11 h-11 rounded-full border border-primary/20 flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-all duration-300 shadow-sm" aria-label="Sonraki Deneyim">
+<button id="nextEventsBtn" type="button" class="w-11 h-11 rounded-full border border-primary/20 flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-all duration-300 shadow-sm" aria-label="Sonraki Organizasyon">
     <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
 </button>
 </div>
@@ -382,7 +382,7 @@
 </div>
 </div>
 
-{{-- Kaydırılabilir Deneyimler Vitrini --}}
+{{-- Kaydırılabilir Organizasyon Vitrini --}}
 <div id="eventsCarousel" class="flex gap-6 lg:gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 pt-2 -mx-6 px-6 lg:-mx-12 lg:px-12" style="scrollbar-width: none; -ms-overflow-style: none;">
 @forelse ($events as $event)
 <a href="{{ route('events.show', $event) }}" class="flex-shrink-0 w-[85vw] sm:w-[360px] lg:w-[410px] snap-start relative h-[560px] overflow-hidden group cursor-pointer bg-primary rounded-none shadow-md transition-all duration-500 block text-decoration-none">
@@ -406,7 +406,7 @@
 </a>
 @empty
 <div class="w-full text-center py-12 text-on-surface-variant">
-    Henüz anasayfada yayınlanan bir deneyim bulunmuyor.
+    Henüz anasayfada yayınlanan bir organizasyon bulunmuyor.
 </div>
 @endforelse
 </div>

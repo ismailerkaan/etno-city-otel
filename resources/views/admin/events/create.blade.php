@@ -17,7 +17,7 @@
                 <a class="btn btn-outline-secondary btn-sm mb-50" href="{{ route('admin.events.index') }}">
                     <i data-feather="arrow-left" class="me-25"></i> Etkinliklere Dön
                 </a>
-                <h4 class="mb-0">Yeni Etkinlik / Deneyim Oluştur</h4>
+                <h4 class="mb-0">Yeni Etkinlik / Organizasyon Oluştur</h4>
             </div>
             <button class="btn btn-success btn-lg shadow" type="submit">
                 <i data-feather="check" class="me-50"></i> Etkinliği Kaydet
@@ -36,19 +36,19 @@
                         <div class="row">
                             <div class="col-md-5 mb-1">
                                 <label class="form-label fw-bold" for="category">Kategori / Etiket (TR)</label>
-                                <input class="form-control @error('category') is-invalid @enderror" id="category" name="category" value="{{ old('category') }}" placeholder="Örn: Gastronomi Deneyimi, Denizcilik Keşfi">
+                                <input class="form-control @error('category') is-invalid @enderror" id="category" name="category" value="{{ old('category') }}" placeholder="Örn: Düğün & Davet, Kurumsal Organizasyon">
                                 @error('category')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                             <div class="col-md-7 mb-1">
                                 <label class="form-label fw-bold" for="title">Etkinlik Başlığı (TR)</label>
-                                <input class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" placeholder="Örn: Uçurum Kenarında Mumlu Akşam Yemeği" required>
+                                <input class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" placeholder="Örn: Toplantı Organizasyonları" required>
                                 @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                         </div>
 
                         <div class="mb-1">
                             <label class="form-label" for="description">Açıklama (TR)</label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="4" placeholder="Etkinlik veya deneyim hakkında detaylı açıklama...">{{ old('description') }}</textarea>
+                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="4" placeholder="Organizasyonun kapsamı, salon düzeni ve hizmetler hakkında detaylı açıklama...">{{ old('description') }}</textarea>
                             @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
@@ -64,11 +64,11 @@
                         <div class="row">
                             <div class="col-md-5 mb-1">
                                 <label class="form-label fw-bold text-info" for="category_en">Category / Badge (EN)</label>
-                                <input class="form-control @error('category_en') is-invalid @enderror" id="category_en" name="category_en" value="{{ old('category_en') }}" placeholder="Ex: Gastronomic Intimacy, Maritime Discovery">
+                                <input class="form-control @error('category_en') is-invalid @enderror" id="category_en" name="category_en" value="{{ old('category_en') }}" placeholder="Ex: Weddings & Receptions, Corporate Events">
                             </div>
                             <div class="col-md-7 mb-1">
                                 <label class="form-label fw-bold text-info" for="title_en">Title (EN)</label>
-                                <input class="form-control @error('title_en') is-invalid @enderror" id="title_en" name="title_en" value="{{ old('title_en') }}" placeholder="Ex: Candlelit Cliffside Dining">
+                                <input class="form-control @error('title_en') is-invalid @enderror" id="title_en" name="title_en" value="{{ old('title_en') }}" placeholder="Ex: Meeting Organizations">
                             </div>
                         </div>
 
@@ -120,7 +120,7 @@
                                     ⭐ Anasayfada Yayınla
                                 </label>
                             </div>
-                            <small class="text-muted d-block mt-50">İşaretlenirse bu etkinlik anasayfadaki "Özel Deneyimler" vitrininde görünür.</small>
+                            <small class="text-muted d-block mt-50">İşaretlenirse bu etkinlik anasayfadaki organizasyon vitrininde görünür.</small>
                         </div>
 
                         <div class="mb-1">

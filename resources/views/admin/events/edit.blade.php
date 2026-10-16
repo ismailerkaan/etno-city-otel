@@ -37,12 +37,12 @@
                         <div class="row">
                             <div class="col-md-5 mb-1">
                                 <label class="form-label fw-bold" for="category">Kategori / Etiket (TR)</label>
-                                <input class="form-control @error('category') is-invalid @enderror" id="category" name="category" value="{{ old('category', $event->category) }}" placeholder="Örn: Gastronomi Deneyimi">
+                                <input class="form-control @error('category') is-invalid @enderror" id="category" name="category" value="{{ old('category', $event->category) }}" placeholder="Örn: Kurumsal Organizasyon">
                                 @error('category')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                             <div class="col-md-7 mb-1">
                                 <label class="form-label fw-bold" for="title">Etkinlik Başlığı (TR)</label>
-                                <input class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $event->title) }}" placeholder="Örn: Uçurum Kenarında Mumlu Akşam Yemeği" required>
+                                <input class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $event->title) }}" placeholder="Örn: Kurumsal Etkinlikler" required>
                                 @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                         </div>
@@ -65,11 +65,11 @@
                         <div class="row">
                             <div class="col-md-5 mb-1">
                                 <label class="form-label fw-bold text-info" for="category_en">Category / Badge (EN)</label>
-                                <input class="form-control @error('category_en') is-invalid @enderror" id="category_en" name="category_en" value="{{ old('category_en', $event->category_en) }}" placeholder="Ex: Gastronomic Intimacy">
+                                <input class="form-control @error('category_en') is-invalid @enderror" id="category_en" name="category_en" value="{{ old('category_en', $event->category_en) }}" placeholder="Ex: Corporate Events">
                             </div>
                             <div class="col-md-7 mb-1">
                                 <label class="form-label fw-bold text-info" for="title_en">Title (EN)</label>
-                                <input class="form-control @error('title_en') is-invalid @enderror" id="title_en" name="title_en" value="{{ old('title_en', $event->title_en) }}" placeholder="Ex: Candlelit Cliffside Dining">
+                                <input class="form-control @error('title_en') is-invalid @enderror" id="title_en" name="title_en" value="{{ old('title_en', $event->title_en) }}" placeholder="Ex: Corporate Events">
                             </div>
                         </div>
 
@@ -127,7 +127,7 @@
                                     ⭐ Anasayfada Yayınla
                                 </label>
                             </div>
-                            <small class="text-muted d-block mt-50">İşaretlenirse bu etkinlik anasayfadaki "Özel Deneyimler" vitrininde görünür.</small>
+                            <small class="text-muted d-block mt-50">İşaretlenirse bu etkinlik anasayfadaki organizasyon vitrininde görünür.</small>
                         </div>
 
                         <div class="mb-1">

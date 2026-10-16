@@ -216,11 +216,20 @@
                                     </label>
                                     <select id="subject" name="subject"
                                             class="w-full bg-surface-container-low px-4 py-3.5 border border-surface-container text-on-surface font-body-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all">
-                                        <option value="{{ app()->isLocale('en') ? 'General Inquiry' : 'Genel Bilgi & Sorular' }}">{{ app()->isLocale('en') ? 'General Inquiry' : 'Genel Bilgi & Sorular' }}</option>
-                                        <option value="{{ app()->isLocale('en') ? 'Room Reservation' : 'Oda & Rezervasyon' }}">{{ app()->isLocale('en') ? 'Room Reservation' : 'Oda & Rezervasyon' }}</option>
-                                        <option value="{{ app()->isLocale('en') ? 'Transport Information' : 'Ulaşım Bilgisi' }}">{{ app()->isLocale('en') ? 'Transport Information' : 'Ulaşım Bilgisi' }}</option>
-                                        <option value="{{ app()->isLocale('en') ? 'Private Event & Wedding' : 'Özel Etkinlik & Kutlama' }}">{{ app()->isLocale('en') ? 'Private Event & Wedding' : 'Özel Etkinlik & Kutlama' }}</option>
-                                        <option value="{{ app()->isLocale('en') ? 'Press & Partnerships' : 'Basın & İş Birlikleri' }}">{{ app()->isLocale('en') ? 'Press & Partnerships' : 'Basın & İş Birlikleri' }}</option>
+                                        @php($selectedSubject = old('subject', request('subject')))
+                                        @foreach ([
+                                            app()->isLocale('en') ? 'General Inquiry' : 'Genel Bilgi & Sorular',
+                                            app()->isLocale('en') ? 'Room Reservation' : 'Oda & Rezervasyon',
+                                            app()->isLocale('en') ? 'Transport Information' : 'Ulaşım Bilgisi',
+                                            app()->isLocale('en') ? 'Wedding Organization' : 'Düğün Organizasyonu',
+                                            app()->isLocale('en') ? 'Meeting Organization' : 'Toplantı Organizasyonu',
+                                            app()->isLocale('en') ? 'Corporate Event' : 'Kurumsal Etkinlik',
+                                            app()->isLocale('en') ? 'Group Dining Organization' : 'Toplu Yemek Organizasyonu',
+                                            app()->isLocale('en') ? 'Special Day Organization' : 'Özel Gün Organizasyonu',
+                                            app()->isLocale('en') ? 'Press & Partnerships' : 'Basın & İş Birlikleri',
+                                        ] as $subjectOption)
+                                            <option value="{{ $subjectOption }}" @selected($selectedSubject === $subjectOption)>{{ $subjectOption }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
