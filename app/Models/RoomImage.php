@@ -37,6 +37,10 @@ class RoomImage extends Model
             return $this->image_url;
         }
 
+        if (str_starts_with($this->image_url, '/')) {
+            return asset(ltrim($this->image_url, '/'));
+        }
+
         return asset('storage/'.$this->image_url);
     }
 
