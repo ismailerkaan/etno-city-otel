@@ -28,8 +28,12 @@ class HeroSliderTest extends TestCase
             ->assertSessionHasNoErrors()
             ->assertRedirect();
 
-        $this->assertDatabaseCount('hero_slides', 2);
-        HeroSlide::query()->each(fn (HeroSlide $slide) => Storage::disk('public')->assertExists($slide->image_path));
+        $uploadedSlides = HeroSlide::query()
+            ->where('image_path', 'like', 'hero-slides/%')
+            ->get();
+
+        $this->assertCount(2, $uploadedSlides);
+        $uploadedSlides->each(fn (HeroSlide $slide) => Storage::disk('public')->assertExists($slide->image_path));
     }
 
     public function test_homepage_renders_only_active_slides(): void
@@ -51,5 +55,16 @@ class HeroSliderTest extends TestCase
             ->assertOk()
             ->assertSee('Aktif görsel')
             ->assertDontSee('Pasif görsel');
+    }
+
+    public function test_homepage_uses_the_selected_single_hero_and_about_images(): void
+    {
+        $response = $this->get(route('home'));
+
+        $response
+            ->assertOk()
+            ->assertViewHas('heroSlides', fn ($slides): bool => $slides->count() === 1)
+            ->assertSee('/storage/home/etnocity-hero.jpg', false)
+            ->assertSee('/storage/home/etnocity-about.jpg', false);
     }
 }

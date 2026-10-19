@@ -57,7 +57,7 @@ class UpdateSiteSettingRequest extends FormRequest
             'about_primary_text_en' => ['sometimes', 'nullable', 'string', 'max:5000'],
             'about_secondary_text' => ['sometimes', 'nullable', 'string', 'max:5000'],
             'about_secondary_text_en' => ['sometimes', 'nullable', 'string', 'max:5000'],
-            'about_image_url' => ['sometimes', 'nullable', 'url', 'max:2048'],
+            'about_image_url' => ['sometimes', 'nullable', 'string', 'max:2048'],
             'suite_count' => ['sometimes', 'nullable', 'integer', 'min:0', 'max:999'],
         ];
     }
