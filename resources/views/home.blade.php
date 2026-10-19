@@ -643,18 +643,6 @@
       title="{{ $siteSetting?->translated('hotel_name') ?: 'EtnoCity Otel' }} Haritası">
     </iframe>
 
-    {{-- Overlay coordinate & location tag --}}
-    @if ($siteSetting?->location_coordinates || $siteSetting?->location_address)
-      <div class="absolute top-6 left-6 bg-surface/90 backdrop-blur-md p-4 space-y-1 max-w-xs shadow-md pointer-events-none border border-black/5">
-        @if ($siteSetting?->location_coordinates)
-          <p class="font-title-md text-title-md text-on-surface">{{ $siteSetting->location_coordinates }}</p>
-        @endif
-        @if ($siteSetting?->location_address)
-          <p class="font-body-sm text-body-sm text-on-surface-variant">{{ $siteSetting->location_address }}</p>
-        @endif
-      </div>
-    @endif
-
     {{-- Pin badge tag if set --}}
     @if ($pinLabel = ($siteSetting?->location_pin_label ?: $siteSetting?->hotel_name))
       <div class="absolute bottom-6 right-6 bg-primary text-on-primary px-3.5 py-1.5 font-label-sm text-[11px] uppercase tracking-widest shadow-xl flex items-center gap-2 pointer-events-none">
