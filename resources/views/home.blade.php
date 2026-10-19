@@ -425,18 +425,18 @@
 <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
 </a>
 </div>
-<!-- Asymmetrical Masonry Grid (5 Images) -->
+<!-- Balanced Gallery Grid (6 Images) -->
 @if ($galleryImages->isNotEmpty())
-<div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch" id="homeGalleryGrid">
-@if ($img1 = $galleryImages->get(0))
-<div class="home-gallery-item {{ $galleryImages->count() === 1 ? 'md:col-span-12' : 'md:col-span-7' }} relative overflow-hidden bg-surface-container h-[420px] md:h-[580px] group cursor-pointer"
-     data-src="{{ $img1->imageUrl() }}"
-     data-tag="{{ $img1->translatedTag() }}"
-     data-category-name="{{ $img1->category?->translatedName() }}">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="{{ $img1->imageUrl() }}" alt="{{ $img1->translatedTag() }}">
-@if ($img1->translatedTag())
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="homeGalleryGrid">
+@foreach ($galleryImages as $galleryImage)
+<div class="home-gallery-item relative overflow-hidden bg-surface-container h-[360px] md:h-[440px] lg:h-[500px] group cursor-pointer"
+     data-src="{{ $galleryImage->imageUrl() }}"
+     data-tag="{{ $galleryImage->translatedTag() }}"
+     data-category-name="{{ $galleryImage->category?->translatedName() }}">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="{{ $galleryImage->imageUrl() }}" alt="{{ $galleryImage->translatedTag() }}">
+@if ($galleryImage->translatedTag())
 <div class="absolute bottom-6 left-6 bg-surface/90 backdrop-blur-md px-4 py-2 pointer-events-none shadow-sm">
-<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface">{{ $img1->translatedTag() }}</p>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface">{{ $galleryImage->translatedTag() }}</p>
 </div>
 @endif
 <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
@@ -445,91 +445,7 @@
 </div>
 </div>
 </div>
-@endif
-
-@if ($galleryImages->count() > 1)
-<div class="md:col-span-5 flex flex-col gap-6">
-@if ($img2 = $galleryImages->get(1))
-<div class="home-gallery-item relative overflow-hidden bg-surface-container h-[200px] md:h-[278px] group cursor-pointer flex-1"
-     data-src="{{ $img2->imageUrl() }}"
-     data-tag="{{ $img2->translatedTag() }}"
-     data-category-name="{{ $img2->category?->translatedName() }}">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="{{ $img2->imageUrl() }}" alt="{{ $img2->translatedTag() }}">
-@if ($img2->translatedTag())
-<div class="absolute bottom-4 left-4 bg-surface/90 backdrop-blur-md px-3.5 py-1 pointer-events-none shadow-sm">
-<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface">{{ $img2->translatedTag() }}</p>
-</div>
-@endif
-<div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-<div class="w-9 h-9 rounded-full bg-surface/85 backdrop-blur-md flex items-center justify-center text-on-surface shadow-md">
-<span class="material-symbols-outlined text-[18px]">zoom_in</span>
-</div>
-</div>
-</div>
-@endif
-@if ($img3 = $galleryImages->get(2))
-<div class="home-gallery-item relative overflow-hidden bg-surface-container h-[200px] md:h-[278px] group cursor-pointer flex-1"
-     data-src="{{ $img3->imageUrl() }}"
-     data-tag="{{ $img3->translatedTag() }}"
-     data-category-name="{{ $img3->category?->translatedName() }}">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="{{ $img3->imageUrl() }}" alt="{{ $img3->translatedTag() }}">
-@if ($img3->translatedTag())
-<div class="absolute bottom-4 left-4 bg-surface/90 backdrop-blur-md px-3.5 py-1 pointer-events-none shadow-sm">
-<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface">{{ $img3->translatedTag() }}</p>
-</div>
-@endif
-<div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-<div class="w-9 h-9 rounded-full bg-surface/85 backdrop-blur-md flex items-center justify-center text-on-surface shadow-md">
-<span class="material-symbols-outlined text-[18px]">zoom_in</span>
-</div>
-</div>
-</div>
-@endif
-</div>
-@endif
-
-    {{-- 4. ve 5. Görseller (Alt Satır - 2 Büyük Editoryal Blok) --}}
-    @if ($galleryImages->count() > 3)
-        <div class="col-span-1 md:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-            @if ($img4 = $galleryImages->get(3))
-                <div class="home-gallery-item {{ $galleryImages->get(4) ? '' : 'md:col-span-2' }} relative overflow-hidden bg-surface-container h-[380px] md:h-[500px] lg:h-[540px] group cursor-pointer"
-                     data-src="{{ $img4->imageUrl() }}"
-                     data-tag="{{ $img4->translatedTag() }}"
-                     data-category-name="{{ $img4->category?->translatedName() }}">
-                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="{{ $img4->imageUrl() }}" alt="{{ $img4->translatedTag() }}">
-                    @if ($img4->translatedTag())
-                        <div class="absolute bottom-6 left-6 bg-surface/90 backdrop-blur-md px-4 py-2 pointer-events-none shadow-sm">
-                            <p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface">{{ $img4->translatedTag() }}</p>
-                        </div>
-                    @endif
-                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                        <div class="w-10 h-10 rounded-full bg-surface/85 backdrop-blur-md flex items-center justify-center text-on-surface shadow-md">
-                            <span class="material-symbols-outlined text-[20px]">zoom_in</span>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            @if ($img5 = $galleryImages->get(4))
-                <div class="home-gallery-item relative overflow-hidden bg-surface-container h-[380px] md:h-[500px] lg:h-[540px] group cursor-pointer"
-                     data-src="{{ $img5->imageUrl() }}"
-                     data-tag="{{ $img5->translatedTag() }}"
-                     data-category-name="{{ $img5->category?->translatedName() }}">
-                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="{{ $img5->imageUrl() }}" alt="{{ $img5->translatedTag() }}">
-                    @if ($img5->translatedTag())
-                        <div class="absolute bottom-6 left-6 bg-surface/90 backdrop-blur-md px-4 py-2 pointer-events-none shadow-sm">
-                            <p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface">{{ $img5->translatedTag() }}</p>
-                        </div>
-                    @endif
-                    <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                        <div class="w-10 h-10 rounded-full bg-surface/85 backdrop-blur-md flex items-center justify-center text-on-surface shadow-md">
-                            <span class="material-symbols-outlined text-[20px]">zoom_in</span>
-                        </div>
-                    </div>
-                </div>
-            @endif
-        </div>
-    @endif
+@endforeach
 </div>
 @endif
 </div>

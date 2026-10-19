@@ -26,7 +26,7 @@ class HomeController extends Controller
             'amenities' => Amenity::query()->active()->orderBy('sort_order')->orderBy('id')->get(),
             'events' => Event::query()->forHome()->orderBy('sort_order')->orderBy('id')->get(),
             'galleryCategories' => GalleryCategory::query()->active()->orderBy('sort_order')->orderBy('id')->get(),
-            'galleryImages' => GalleryImage::query()->active()->with('category')->orderBy('sort_order')->orderBy('id')->limit(5)->get(),
+            'galleryImages' => GalleryImage::query()->active()->with('category')->orderBy('sort_order')->orderBy('id')->limit(6)->get(),
             'testimonials' => Testimonial::query()->active()->orderBy('sort_order')->orderBy('id')->get(),
             'nearbyPlaces' => NearbyPlace::query()->active()->orderBy('sort_order')->orderBy('id')->get(),
             'homeRoomTypes' => RoomType::query()->active()->where('show_on_home', true)->with('images')->orderBy('sort_order')->orderBy('id')->get(),

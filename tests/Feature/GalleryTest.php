@@ -185,7 +185,9 @@ class GalleryTest extends TestCase
             ->assertSee('/storage/gallery/etnocity-single-room.jpg', false)
             ->assertSee('/storage/gallery/etnocity-bathroom.jpg', false)
             ->assertSee('/storage/gallery/etnocity-lobby.jpg', false)
-            ->assertSee('/storage/gallery/etnocity-city-view.jpg', false);
+            ->assertSee('/storage/gallery/etnocity-city-view.jpg', false)
+            ->assertSee('/storage/gallery/etnocity-window-room.jpg', false)
+            ->assertViewHas('galleryImages', fn ($images): bool => $images->count() === 6);
     }
 
     public function test_public_gallery_page_renders_all_categories_and_images(): void
