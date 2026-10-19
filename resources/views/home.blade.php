@@ -646,9 +646,6 @@
     {{-- Overlay coordinate & location tag --}}
     @if ($siteSetting?->location_coordinates || $siteSetting?->location_address)
       <div class="absolute top-6 left-6 bg-surface/90 backdrop-blur-md p-4 space-y-1 max-w-xs shadow-md pointer-events-none border border-black/5">
-        <span class="font-label-sm text-[10px] uppercase tracking-widest text-secondary block">
-          {{ app()->isLocale('en') ? 'GPS Geographic Anchor' : 'GPS Coğrafi Konumu' }}
-        </span>
         @if ($siteSetting?->location_coordinates)
           <p class="font-title-md text-title-md text-on-surface">{{ $siteSetting->location_coordinates }}</p>
         @endif

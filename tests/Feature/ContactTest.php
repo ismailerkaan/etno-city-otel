@@ -225,6 +225,19 @@ class ContactTest extends TestCase
         $this->assertStringContainsString('https://www.google.com/maps/dir/?api=1&destination=37.122889,27.278917', $settingWithEmbed->directionsUrl());
     }
 
+    public function test_directions_url_uses_the_location_shown_on_the_map(): void
+    {
+        $setting = new SiteSetting([
+            'location_coordinates' => '37.122889, 27.278917',
+            'location_map_embed_url' => 'https://maps.google.com/maps?q=40.182724,29.067037&output=embed',
+        ]);
+
+        $this->assertSame(
+            'https://www.google.com/maps/dir/?api=1&destination=40.182724,29.067037',
+            $setting->directionsUrl(),
+        );
+    }
+
     public function test_refined_location_title_and_description(): void
     {
         $setting = new SiteSetting([

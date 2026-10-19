@@ -63,17 +63,6 @@ class SiteSetting extends Model
 
     public function directionsUrl(): string
     {
-        // 1. Koordinat alanı kontrolü (örn: "37.122889, 27.278917" veya derece formatı)
-        if (! empty($this->location_coordinates)) {
-            $coords = trim((string) $this->location_coordinates);
-            if (preg_match('/([0-9\.\-]+)\s*,\s*([0-9\.\-]+)/', $coords, $m)) {
-                return 'https://www.google.com/maps/dir/?api=1&destination='.$m[1].','.$m[2];
-            }
-
-            return 'https://www.google.com/maps/dir/?api=1&destination='.urlencode($coords);
-        }
-
-        // 2. Map embed URL içinden koordinat çıkarma
         if (! empty($this->location_map_embed_url)) {
             $embed = (string) $this->location_map_embed_url;
             if (preg_match('/!3d([0-9\.\-]+)!2d([0-9\.\-]+)/', $embed, $m)) {
@@ -90,7 +79,15 @@ class SiteSetting extends Model
             }
         }
 
-        // 3. Adres veya otel adı
+        if (! empty($this->location_coordinates)) {
+            $coordinates = trim((string) $this->location_coordinates);
+            if (preg_match('/([0-9\.\-]+)\s*,\s*([0-9\.\-]+)/', $coordinates, $matches)) {
+                return 'https://www.google.com/maps/dir/?api=1&destination='.$matches[1].','.$matches[2];
+            }
+
+            return 'https://www.google.com/maps/dir/?api=1&destination='.urlencode($coordinates);
+        }
+
         $destination = trim(($this->hotel_name ?? 'EtnoCity').' '.($this->address ?: 'Bodrum Muğla'));
 
         return 'https://www.google.com/maps/dir/?api=1&destination='.urlencode($destination);
