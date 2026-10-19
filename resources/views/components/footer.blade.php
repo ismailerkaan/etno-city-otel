@@ -34,7 +34,9 @@
                 <p class="font-label-sm uppercase text-secondary tracking-[0.25em]">{{ __('site.menu') }}</p>
                 <ul class="space-y-3 font-body-sm text-on-surface-variant">
                     <li><a class="hover:text-on-surface" href="{{ route('home') }}#odalar">{{ __('site.rooms') }}</a></li>
-                    <li><a class="hover:text-on-surface" href="{{ route('home') }}#etkinlikler">{{ __('site.experiences') }}</a></li>
+                    @if ($siteSetting?->events_enabled ?? true)
+                        <li><a class="hover:text-on-surface" href="{{ route('home') }}#etkinlikler">{{ __('site.experiences') }}</a></li>
+                    @endif
                     <li><a class="hover:text-on-surface" href="{{ route('gallery') }}">{{ __('site.gallery') }}</a></li>
                     <li><a class="hover:text-on-surface" href="{{ route('home') }}#hikayemiz">{{ __('site.story') }}</a></li>
                     <li><a class="hover:text-on-surface" href="{{ route('contact') }}">{{ __('site.contact') }}</a></li>

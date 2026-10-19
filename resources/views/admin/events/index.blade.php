@@ -15,6 +15,19 @@
             <form method="POST" action="{{ route('admin.events.section-update') }}">
                 @csrf
                 @method('PUT')
+                <div class="alert {{ $siteSetting->events_enabled ? 'alert-success' : 'alert-warning' }} d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-1 mb-2" role="status">
+                    <div>
+                        <h5 class="mb-25">Etkinliklerin Site Görünürlüğü</h5>
+                        <p class="mb-0">Kapattığınızda etkinlikler silinmez; menüden, ana sayfadan ve ziyaretçilerin erişebildiği tüm alanlardan kaldırılır.</p>
+                    </div>
+                    <div class="flex-shrink-0" style="min-width: 190px;">
+                        <label class="form-label fw-bold" for="events_enabled">Gösterim Durumu</label>
+                        <select class="form-select" id="events_enabled" name="events_enabled" required>
+                            <option value="1" @selected((int) old('events_enabled', $siteSetting->events_enabled) === 1)>Etkinlikler Görünsün</option>
+                            <option value="0" @selected((int) old('events_enabled', $siteSetting->events_enabled) === 0)>Etkinlikler Görünmesin</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="row">
                     {{-- Türkçe --}}
                     <div class="col-md-6 mb-1">

@@ -22,7 +22,9 @@
         </div>
         <nav class="hidden xl:flex items-center gap-8">
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] {{ request()->routeIs('home') ? 'text-on-surface' : 'text-on-surface-variant' }} hover:text-on-surface transition-colors py-2" href="{{ route('home') }}#odalar">{{ __('site.rooms') }}</a>
-            <a class="font-label-md text-label-md uppercase tracking-[0.2em] text-on-surface-variant hover:text-on-surface transition-colors py-2" href="{{ route('home') }}#etkinlikler">{{ __('site.experiences') }}</a>
+            @if ($siteSetting?->events_enabled ?? true)
+                <a class="font-label-md text-label-md uppercase tracking-[0.2em] text-on-surface-variant hover:text-on-surface transition-colors py-2" href="{{ route('home') }}#etkinlikler">{{ __('site.experiences') }}</a>
+            @endif
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] {{ request()->routeIs('gallery') ? 'text-on-surface font-semibold underline underline-offset-8 decoration-secondary' : 'text-on-surface-variant hover:text-on-surface' }} transition-colors py-2" href="{{ route('gallery') }}">{{ __('site.gallery') }}</a>
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] text-on-surface-variant hover:text-on-surface transition-colors py-2" href="{{ route('home') }}#hikayemiz">{{ __('site.story') }}</a>
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] {{ request()->routeIs('contact') ? 'text-on-surface font-semibold underline underline-offset-8 decoration-secondary' : 'text-on-surface-variant hover:text-on-surface' }} transition-colors py-2" href="{{ route('contact') }}">{{ __('site.contact') }}</a>
@@ -43,7 +45,9 @@
     <div id="mobile-nav-menu" class="hidden xl:hidden bg-surface/98 backdrop-blur-xl border-t border-surface-container-high px-6 py-6 shadow-xl transition-all">
         <nav class="flex flex-col space-y-3">
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] {{ request()->routeIs('home') ? 'text-secondary font-semibold' : 'text-on-surface-variant' }} hover:text-on-surface py-2 border-b border-surface-container-high/50" href="{{ route('home') }}#odalar">{{ __('site.rooms') }}</a>
-            <a class="font-label-md text-label-md uppercase tracking-[0.2em] text-on-surface-variant hover:text-on-surface py-2 border-b border-surface-container-high/50" href="{{ route('home') }}#etkinlikler">{{ __('site.experiences') }}</a>
+            @if ($siteSetting?->events_enabled ?? true)
+                <a class="font-label-md text-label-md uppercase tracking-[0.2em] text-on-surface-variant hover:text-on-surface py-2 border-b border-surface-container-high/50" href="{{ route('home') }}#etkinlikler">{{ __('site.experiences') }}</a>
+            @endif
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] {{ request()->routeIs('gallery') ? 'text-secondary font-semibold' : 'text-on-surface-variant' }} hover:text-on-surface py-2 border-b border-surface-container-high/50" href="{{ route('gallery') }}">{{ __('site.gallery') }}</a>
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] text-on-surface-variant hover:text-on-surface py-2 border-b border-surface-container-high/50" href="{{ route('home') }}#hikayemiz">{{ __('site.story') }}</a>
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] {{ request()->routeIs('contact') ? 'text-secondary font-semibold' : 'text-on-surface-variant' }} hover:text-on-surface py-2 border-b border-surface-container-high/50" href="{{ route('contact') }}">{{ __('site.contact') }}</a>

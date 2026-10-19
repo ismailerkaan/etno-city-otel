@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Event;
 use App\Models\SiteSetting;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -51,5 +52,39 @@ class EventContentTest extends TestCase
             ->assertSee('Organizasyon Teklifi Al')
             ->assertSee('/iletisim?subject=Düğün Organizasyonu', false)
             ->assertDontSee('7/24 Butler & Concierge');
+    }
+
+    public function test_admin_can_hide_events_from_every_public_area(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $event = Event::query()->where('title', 'Düğün Organizasyonları')->firstOrFail();
+        $siteSetting = SiteSetting::query()->firstOrFail();
+
+        $this->actingAs($admin)
+            ->put(route('admin.events.section-update'), [
+                'events_enabled' => '0',
+                'events_eyebrow' => $siteSetting->events_eyebrow,
+                'events_title' => $siteSetting->events_title,
+                'events_subtitle' => $siteSetting->events_subtitle,
+                'events_eyebrow_en' => $siteSetting->events_eyebrow_en,
+                'events_title_en' => $siteSetting->events_title_en,
+                'events_subtitle_en' => $siteSetting->events_subtitle_en,
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('success');
+
+        $this->assertFalse($siteSetting->fresh()->events_enabled);
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertDontSee('id="etkinlikler"', false)
+            ->assertDontSee('Düğün Organizasyonları')
+            ->assertDontSee('#etkinlikler', false);
+
+        $this->get(route('contact'))
+            ->assertOk()
+            ->assertDontSee('Düğün Organizasyonu');
+
+        $this->get(route('events.show', $event))->assertNotFound();
     }
 }

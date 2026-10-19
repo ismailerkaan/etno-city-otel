@@ -13,7 +13,9 @@ class EventController extends Controller
      */
     public function show(Event $event): View
     {
-        abort_unless($event->is_active, 404);
+        $siteSetting = SiteSetting::query()->first();
+
+        abort_unless(($siteSetting?->events_enabled ?? true) && $event->is_active, 404);
 
         $otherEvents = Event::query()
             ->active()
@@ -25,7 +27,7 @@ class EventController extends Controller
         return view('events.show', [
             'event' => $event,
             'otherEvents' => $otherEvents,
-            'siteSetting' => SiteSetting::query()->first(),
+            'siteSetting' => $siteSetting,
         ]);
     }
 }

@@ -20,11 +20,15 @@ class HomeController extends Controller
      */
     public function __invoke(): View
     {
+        $siteSetting = SiteSetting::query()->first();
+
         return view('home', [
-            'siteSetting' => SiteSetting::query()->first(),
+            'siteSetting' => $siteSetting,
             'heroSlides' => HeroSlide::query()->active()->orderBy('sort_order')->orderBy('id')->get(),
             'amenities' => Amenity::query()->active()->orderBy('sort_order')->orderBy('id')->get(),
-            'events' => Event::query()->forHome()->orderBy('sort_order')->orderBy('id')->get(),
+            'events' => ($siteSetting?->events_enabled ?? true)
+                ? Event::query()->forHome()->orderBy('sort_order')->orderBy('id')->get()
+                : collect(),
             'galleryCategories' => GalleryCategory::query()->active()->orderBy('sort_order')->orderBy('id')->get(),
             'galleryImages' => GalleryImage::query()->active()->with('category')->orderBy('sort_order')->orderBy('id')->limit(6)->get(),
             'testimonials' => Testimonial::query()->active()->orderBy('sort_order')->orderBy('id')->get(),

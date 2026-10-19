@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Schema;
     'amenities_eyebrow', 'amenities_title', 'amenities_subtitle',
     'amenities_eyebrow_en', 'amenities_title_en', 'amenities_subtitle_en',
     'events_eyebrow', 'events_title', 'events_subtitle',
-    'events_eyebrow_en', 'events_title_en', 'events_subtitle_en',
+    'events_eyebrow_en', 'events_title_en', 'events_subtitle_en', 'events_enabled',
     'gallery_eyebrow', 'gallery_title', 'gallery_description',
     'gallery_eyebrow_en', 'gallery_title_en', 'gallery_description_en',
     'testimonials_eyebrow', 'testimonials_title', 'testimonials_description',
@@ -171,6 +171,7 @@ class SiteSetting extends Model
     {
         return [
             'suite_count' => 'integer',
+            'events_enabled' => 'boolean',
         ];
     }
 }

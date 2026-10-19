@@ -216,18 +216,26 @@
                                     </label>
                                     <select id="subject" name="subject"
                                             class="w-full bg-surface-container-low px-4 py-3.5 border border-surface-container text-on-surface font-body-sm focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all">
-                                        @php($selectedSubject = old('subject', request('subject')))
-                                        @foreach ([
-                                            app()->isLocale('en') ? 'General Inquiry' : 'Genel Bilgi & Sorular',
-                                            app()->isLocale('en') ? 'Room Reservation' : 'Oda & Rezervasyon',
-                                            app()->isLocale('en') ? 'Transport Information' : 'Ulaşım Bilgisi',
-                                            app()->isLocale('en') ? 'Wedding Organization' : 'Düğün Organizasyonu',
-                                            app()->isLocale('en') ? 'Meeting Organization' : 'Toplantı Organizasyonu',
-                                            app()->isLocale('en') ? 'Corporate Event' : 'Kurumsal Etkinlik',
-                                            app()->isLocale('en') ? 'Group Dining Organization' : 'Toplu Yemek Organizasyonu',
-                                            app()->isLocale('en') ? 'Special Day Organization' : 'Özel Gün Organizasyonu',
-                                            app()->isLocale('en') ? 'Press & Partnerships' : 'Basın & İş Birlikleri',
-                                        ] as $subjectOption)
+                                        @php
+                                            $selectedSubject = old('subject', request('subject'));
+                                            $subjectOptions = [
+                                                app()->isLocale('en') ? 'General Inquiry' : 'Genel Bilgi & Sorular',
+                                                app()->isLocale('en') ? 'Room Reservation' : 'Oda & Rezervasyon',
+                                                app()->isLocale('en') ? 'Transport Information' : 'Ulaşım Bilgisi',
+                                                app()->isLocale('en') ? 'Press & Partnerships' : 'Basın & İş Birlikleri',
+                                            ];
+
+                                            if ($siteSetting?->events_enabled ?? true) {
+                                                array_splice($subjectOptions, 3, 0, [
+                                                    app()->isLocale('en') ? 'Wedding Organization' : 'Düğün Organizasyonu',
+                                                    app()->isLocale('en') ? 'Meeting Organization' : 'Toplantı Organizasyonu',
+                                                    app()->isLocale('en') ? 'Corporate Event' : 'Kurumsal Etkinlik',
+                                                    app()->isLocale('en') ? 'Group Dining Organization' : 'Toplu Yemek Organizasyonu',
+                                                    app()->isLocale('en') ? 'Special Day Organization' : 'Özel Gün Organizasyonu',
+                                                ]);
+                                            }
+                                        @endphp
+                                        @foreach ($subjectOptions as $subjectOption)
                                             <option value="{{ $subjectOption }}" @selected($selectedSubject === $subjectOption)>{{ $subjectOption }}</option>
                                         @endforeach
                                     </select>

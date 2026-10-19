@@ -355,6 +355,7 @@
 </div>
 </section>
 <!-- 5. CITY HOTEL EVENTS -->
+@if ($siteSetting?->events_enabled ?? true)
 <section class="w-full py-28 bg-surface-container-high" id="etkinlikler">
 <div class="max-w-[1440px] mx-auto px-6 lg:px-12 space-y-16">
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -412,6 +413,7 @@
 </div>
 </div>
 </section>
+@endif
 <!-- 6. ASYMMETRICAL EDITORIAL GALLERY -->
 <section class="w-full py-28 bg-surface" id="galeri">
 <div class="max-w-[1440px] mx-auto px-6 lg:px-12 space-y-12">

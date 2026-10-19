@@ -165,6 +165,7 @@ class EventController extends Controller
             'events_eyebrow_en' => ['nullable', 'string', 'max:255'],
             'events_title_en' => ['nullable', 'string', 'max:255'],
             'events_subtitle_en' => ['nullable', 'string', 'max:1000'],
+            'events_enabled' => ['required', 'boolean'],
         ]);
 
         $siteSetting = SiteSetting::firstOrFail();
