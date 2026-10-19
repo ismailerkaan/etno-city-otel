@@ -64,7 +64,7 @@ class HeroSliderTest extends TestCase
         $response
             ->assertOk()
             ->assertViewHas('heroSlides', fn ($slides): bool => $slides->count() === 1)
-            ->assertSee('/storage/home/etnocity-hero.jpg', false)
-            ->assertSee('/storage/home/etnocity-about.jpg', false);
+            ->assertSee('/storage/home/etnocity-hotel-view.jpg', false)
+            ->assertSee('/storage/home/etnocity-hotel-lobby.jpg', false);
     }
 }

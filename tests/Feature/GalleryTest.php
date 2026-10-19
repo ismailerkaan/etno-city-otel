@@ -177,6 +177,17 @@ class GalleryTest extends TestCase
             ->assertSee('Exclusive Ocean View');
     }
 
+    public function test_homepage_uses_the_real_hotel_gallery_images(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('/storage/gallery/etnocity-double-room.jpg', false)
+            ->assertSee('/storage/gallery/etnocity-single-room.jpg', false)
+            ->assertSee('/storage/gallery/etnocity-bathroom.jpg', false)
+            ->assertSee('/storage/gallery/etnocity-lobby.jpg', false)
+            ->assertSee('/storage/gallery/etnocity-city-view.jpg', false);
+    }
+
     public function test_public_gallery_page_renders_all_categories_and_images(): void
     {
         $category = GalleryCategory::query()->create([
