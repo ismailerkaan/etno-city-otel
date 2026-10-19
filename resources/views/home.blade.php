@@ -429,7 +429,7 @@
 @if ($galleryImages->isNotEmpty())
 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch" id="homeGalleryGrid">
 @if ($img1 = $galleryImages->get(0))
-<div class="home-gallery-item md:col-span-7 relative overflow-hidden bg-surface-container h-[420px] md:h-[580px] group cursor-pointer"
+<div class="home-gallery-item {{ $galleryImages->count() === 1 ? 'md:col-span-12' : 'md:col-span-7' }} relative overflow-hidden bg-surface-container h-[420px] md:h-[580px] group cursor-pointer"
      data-src="{{ $img1->imageUrl() }}"
      data-tag="{{ $img1->translatedTag() }}"
      data-category-name="{{ $img1->category?->translatedName() }}">
