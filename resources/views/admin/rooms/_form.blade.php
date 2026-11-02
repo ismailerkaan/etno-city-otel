@@ -53,6 +53,33 @@
                 <div class="form-check form-switch mt-1"><input type="hidden" name="show_on_home" value="0"><input class="form-check-input" id="show_on_home" name="show_on_home" type="checkbox" value="1" @checked(old('show_on_home', $roomType->show_on_home ?? false))><label class="form-check-label" for="show_on_home">Anasayfada göster</label></div>
             </div>
         </div>
+        <div class="card">
+            <div class="card-header"><h4 class="card-title">HMS Eşleştirmesi</h4></div>
+            <div class="card-body">
+                @php($selectedHmsRoomType = old('hms_room_type_id', $roomType->hms_room_type_id))
+                @if (! $hmsEnabled)
+                    <p class="text-muted small mb-1">HMS entegrasyonu kapalı. Açıldığında fiyat ve müsaitlik eşleştirilen HMS oda tipinden gelir.</p>
+                @elseif ($hmsError)
+                    <div class="alert alert-warning p-1 small mb-1">HMS oda listesi alınamadı: {{ $hmsError }}. Oda tipi kimliğini elle girebilirsiniz.</div>
+                @endif
+                <label class="form-label" for="hms_room_type_id">HMS Oda Tipi</label>
+                @if ($hmsRoomTypes)
+                    <select class="form-select @error('hms_room_type_id') is-invalid @enderror" id="hms_room_type_id" name="hms_room_type_id">
+                        <option value="">Eşleştirilmedi</option>
+                        @foreach ($hmsRoomTypes as $hmsId => $hmsName)
+                            <option value="{{ $hmsId }}" @selected((int) $selectedHmsRoomType === $hmsId)>{{ $hmsName }} (#{{ $hmsId }})</option>
+                        @endforeach
+                        @if ($selectedHmsRoomType && ! isset($hmsRoomTypes[(int) $selectedHmsRoomType]))
+                            <option value="{{ $selectedHmsRoomType }}" selected>HMS'te bulunamadı (#{{ $selectedHmsRoomType }})</option>
+                        @endif
+                    </select>
+                @else
+                    <input class="form-control @error('hms_room_type_id') is-invalid @enderror" id="hms_room_type_id" name="hms_room_type_id" type="number" min="1" value="{{ $selectedHmsRoomType }}" placeholder="Örn: 12">
+                @endif
+                @error('hms_room_type_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <small class="text-muted d-block mt-50">Eşleştirilmeyen oda, HMS açıkken rezervasyonda "müsait değil" görünür.</small>
+            </div>
+        </div>
     </div>
 </div>
 

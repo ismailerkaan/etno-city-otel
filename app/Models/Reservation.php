@@ -17,12 +17,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'nights',
     'adults',
     'children',
+    'child_ages',
     'first_name',
     'last_name',
     'email',
     'phone',
     'special_requests',
     'room_name',
+    'hms_room_type_id',
+    'hms_rate_plan_id',
+    'board_name',
+    'hms_price_key',
+    'non_refundable',
+    'daily_rates',
+    'hms_booking_id',
+    'hms_synced_at',
+    'hms_sync_error',
     'nightly_price',
     'total_price',
     'currency',
@@ -59,6 +69,11 @@ class Reservation extends Model
         return $this->belongsTo(RoomType::class);
     }
 
+    public function isHmsReservation(): bool
+    {
+        return $this->hms_room_type_id !== null;
+    }
+
     public function guestFullName(): string
     {
         return trim($this->first_name.' '.$this->last_name);
@@ -72,6 +87,10 @@ class Reservation extends Model
             'nights' => 'integer',
             'adults' => 'integer',
             'children' => 'integer',
+            'child_ages' => 'array',
+            'non_refundable' => 'boolean',
+            'daily_rates' => 'array',
+            'hms_synced_at' => 'datetime',
             'nightly_price' => 'decimal:2',
             'total_price' => 'decimal:2',
             'paid_at' => 'datetime',

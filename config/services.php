@@ -14,6 +14,16 @@ return [
     |
     */
 
+    'hms' => [
+        // HMS Online Booking API (https://www.hmsdev.com/online-booking)
+        'enabled' => (bool) env('HMS_ENABLED', false),
+        'base_url' => env('HMS_BASE_URL', 'https://test.hms.gen.tr'),
+        'api_key' => env('HMS_API_KEY'),
+        'api_secret' => env('HMS_API_SECRET'),
+        'hotel_code' => env('HMS_HOTEL_CODE'),
+        'timeout' => (int) env('HMS_TIMEOUT', 15),
+    ],
+
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],

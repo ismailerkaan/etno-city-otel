@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreRoomTypeRequest;
 use App\Http\Requests\Admin\UpdateRoomTypeRequest;
 use App\Models\RoomType;
+use App\Services\Hms\HmsClient;
+use App\Services\Hms\HmsException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +26,7 @@ class RoomTypeController extends Controller
 
     public function create(): View
     {
-        return view('admin.rooms.create', ['roomType' => new RoomType]);
+        return view('admin.rooms.create', ['roomType' => new RoomType, ...$this->hmsOptions()]);
     }
 
     public function store(StoreRoomTypeRequest $request): RedirectResponse
@@ -46,7 +48,7 @@ class RoomTypeController extends Controller
 
     public function edit(RoomType $roomType): View
     {
-        return view('admin.rooms.edit', ['roomType' => $roomType->load('images')]);
+        return view('admin.rooms.edit', ['roomType' => $roomType->load('images'), ...$this->hmsOptions()]);
     }
 
     public function update(UpdateRoomTypeRequest $request, RoomType $roomType): RedirectResponse
@@ -71,6 +73,22 @@ class RoomTypeController extends Controller
         return redirect()->route('admin.rooms.index')->with('success', 'Oda tipi silindi.');
     }
 
+    /** @return array{hmsEnabled: bool, hmsRoomTypes: array<int, string>, hmsError: ?string} */
+    private function hmsOptions(): array
+    {
+        $hms = app(HmsClient::class);
+
+        if (! $hms->isEnabled()) {
+            return ['hmsEnabled' => false, 'hmsRoomTypes' => [], 'hmsError' => null];
+        }
+
+        try {
+            return ['hmsEnabled' => true, 'hmsRoomTypes' => $hms->roomTypeOptions(), 'hmsError' => null];
+        } catch (HmsException $exception) {
+            return ['hmsEnabled' => true, 'hmsRoomTypes' => [], 'hmsError' => $exception->getMessage()];
+        }
+    }
+
     /**
      * @param  array<string, mixed>  $validated
      * @return array<string, mixed>
@@ -92,6 +110,7 @@ class RoomTypeController extends Controller
             'bed_type_en' => $validated['bed_type_en'] ?? null,
             'features' => $this->lines($validated['features_text'] ?? null),
             'features_en' => $this->lines($validated['features_en_text'] ?? null),
+            'hms_room_type_id' => $validated['hms_room_type_id'] ?? null,
             'sort_order' => $validated['sort_order'],
             'is_active' => $validated['is_active'] ?? false,
             'show_on_home' => $validated['show_on_home'] ?? false,

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\RoomType;
+use App\Services\Hms\HmsClient;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -25,7 +26,15 @@ class StoreReservationRequest extends FormRequest
      */
     public function rules(): array
     {
+        $hmsRules = app(HmsClient::class)->isEnabled() ? [
+            'rate_plan_id' => ['required', 'integer', 'min:1'],
+            'price_key' => ['required', 'string', 'regex:/^\d+-[01]$/'],
+            'child_ages' => [Rule::requiredIf($this->integer('children') > 0), 'array', 'size:'.max(0, $this->integer('children'))],
+            'child_ages.*' => ['integer', 'between:0,16'],
+        ] : [];
+
         return [
+            ...$hmsRules,
             'check_in' => ['required', Rule::date()->format('Y-m-d')->todayOrAfter()],
             'check_out' => ['required', Rule::date()->format('Y-m-d')->after('check_in')],
             'adults' => ['required', 'integer', 'min:1', 'max:20'],
@@ -36,6 +45,15 @@ class StoreReservationRequest extends FormRequest
             'phone' => ['required', 'string', 'max:50'],
             'special_requests' => ['nullable', 'string', 'max:2000'],
             'terms_accepted' => ['accepted'],
+        ];
+    }
+
+    /** @return array<string, string> */
+    public function messages(): array
+    {
+        return [
+            'child_ages.required' => 'Lütfen her çocuk için yaş seçin.',
+            'child_ages.size' => 'Lütfen her çocuk için yaş seçin.',
         ];
     }
 

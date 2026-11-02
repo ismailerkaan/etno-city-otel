@@ -14,6 +14,12 @@
                     <label class="space-y-1"><span class="text-xs font-semibold uppercase tracking-wider text-secondary">Çocuk</span><input class="w-full bg-white px-4 py-3 text-on-surface outline-none ring-secondary focus:ring-1" name="children" type="number" min="0" max="20" value="{{ $children }}" required></label>
                     <button class="mt-5 bg-primary px-5 py-3 font-label-md text-label-md uppercase tracking-[0.18em] text-on-primary transition-colors hover:bg-secondary" type="submit">Seçenekleri Güncelle</button>
                 </form>
+                @if ($hmsError)
+                    <div class="mt-5 flex gap-3 border border-error/30 bg-error-container p-4 text-sm text-on-error-container" role="alert"><span class="material-symbols-outlined">error</span>{{ $hmsError }}</div>
+                @endif
+                @if ($needsChildAges)
+                    <div class="mt-5">@include('reservation._child-ages', ['action' => route('reservation.step1')])</div>
+                @endif
             </div>
         </section>
 
@@ -27,7 +33,10 @@
                             'ekonomik' => 'En Uygun Fiyat', 'single' => 'Tek Kişilik Seyahat', 'aile-odasi' => 'Aileler İçin',
                             'balkonlu-oda' => 'Balkonlu', 'manzarali-oda' => 'Özel Manzara', default => 'En Çok Tercih Edilen',
                         };
-                        $detailParameters = ['roomType' => $roomType, 'checkin' => $checkIn->toDateString(), 'checkout' => $checkOut->toDateString(), 'adults' => $adults, 'children' => $children];
+                        $detailParameters = ['roomType' => $roomType, ...$searchParameters];
+                        $roomOffers = collect($hmsOffers[$roomType->id] ?? []);
+                        $cheapestOffer = $roomOffers->sortBy(fn ($offer) => (float) $offer->total)->first();
+                        $canBook = $fits && (! $hmsEnabled || $cheapestOffer);
                     @endphp
                     <article class="group grid overflow-hidden border border-surface-container-high bg-surface shadow-sm transition-shadow hover:shadow-xl lg:grid-cols-12">
                         <a class="relative block min-h-72 overflow-hidden lg:col-span-5 lg:min-h-[410px]" href="{{ route('reservation.step2', $detailParameters) }}">
@@ -43,8 +52,20 @@
                                 <div class="mt-5 flex flex-wrap gap-2">@foreach(array_slice($roomType->translatedFeatures(), 0, 4) as $feature)<span class="inline-flex items-center gap-1.5 border border-surface-container-high px-3 py-2 text-xs text-on-surface-variant"><span class="material-symbols-outlined text-sm text-secondary">check</span>{{ $feature }}</span>@endforeach</div>
                             </div>
                             <div class="flex flex-col justify-between gap-5 border-t border-surface-container-high pt-6 sm:flex-row sm:items-end">
-                                <div><p class="text-xs uppercase tracking-wider text-on-surface-variant">{{ $nights }} gece toplam</p><div class="mt-1 flex items-end gap-2"><strong class="font-headline-md text-headline-md text-on-surface">₺{{ number_format((float) $roomType->nightly_price * $nights, 0, ',', '.') }}</strong><span class="pb-1 text-sm text-on-surface-variant">₺{{ number_format((float) $roomType->nightly_price, 0, ',', '.') }} / gece</span></div><p class="mt-1 text-xs text-on-surface-variant">Vergiler dahil</p></div>
-                                <div class="flex gap-3"><a class="border border-primary px-5 py-3 text-center text-sm font-semibold uppercase tracking-wider text-primary hover:bg-primary hover:text-on-primary" href="{{ route('reservation.step2', $detailParameters) }}">Detayları Gör</a>@if($fits)<a class="bg-primary px-5 py-3 text-center text-sm font-semibold uppercase tracking-wider text-on-primary hover:bg-secondary" href="{{ route('reservation.step4', $detailParameters) }}">Odayı Seç</a>@endif</div>
+                                @if ($hmsEnabled)
+                                    @if ($cheapestOffer)
+                                        <div><p class="text-xs uppercase tracking-wider text-on-surface-variant">{{ $nights }} gece toplam · başlayan fiyatlarla</p><div class="mt-1 flex items-end gap-2"><strong class="font-headline-md text-headline-md text-on-surface">₺{{ number_format((float) $cheapestOffer->total, 0, ',', '.') }}</strong><span class="pb-1 text-sm text-on-surface-variant">{{ $cheapestOffer->ratePlanName }}</span></div><p class="mt-1 text-xs text-on-surface-variant">{{ $roomOffers->unique('ratePlanId')->count() }} konaklama seçeneği · Vergiler dahil</p></div>
+                                    @elseif ($needsChildAges)
+                                        <div><p class="text-sm text-on-surface-variant">Fiyatları görmek için çocuk yaşlarını seçin.</p></div>
+                                    @elseif (! $hmsError)
+                                        <div><p class="inline-flex items-center gap-2 text-sm font-semibold text-error"><span class="material-symbols-outlined text-base">event_busy</span>Seçtiğiniz tarihlerde müsait değil</p></div>
+                                    @else
+                                        <div></div>
+                                    @endif
+                                @else
+                                    <div><p class="text-xs uppercase tracking-wider text-on-surface-variant">{{ $nights }} gece toplam</p><div class="mt-1 flex items-end gap-2"><strong class="font-headline-md text-headline-md text-on-surface">₺{{ number_format((float) $roomType->nightly_price * $nights, 0, ',', '.') }}</strong><span class="pb-1 text-sm text-on-surface-variant">₺{{ number_format((float) $roomType->nightly_price, 0, ',', '.') }} / gece</span></div><p class="mt-1 text-xs text-on-surface-variant">Vergiler dahil</p></div>
+                                @endif
+                                <div class="flex gap-3"><a class="border border-primary px-5 py-3 text-center text-sm font-semibold uppercase tracking-wider text-primary hover:bg-primary hover:text-on-primary" href="{{ route('reservation.step2', $detailParameters) }}">Detayları Gör</a>@if($canBook)<a class="bg-primary px-5 py-3 text-center text-sm font-semibold uppercase tracking-wider text-on-primary hover:bg-secondary" href="{{ route($hmsEnabled ? 'reservation.step2' : 'reservation.step4', $detailParameters) }}">Odayı Seç</a>@endif</div>
                             </div>
                         </div>
                     </article>
@@ -71,7 +92,7 @@
         @endif
 
         @if($roomTypes->isNotEmpty())
-            <section class="bg-surface-container-low py-16" id="oda-karsilastirma"><div class="mx-auto max-w-[1440px] overflow-x-auto px-6 lg:px-12"><div class="mb-7"><span class="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">Hızlı Karşılaştırma</span><h2 class="mt-2 font-headline-md text-headline-md">Odalar Yan Yana</h2></div><table class="w-full min-w-[820px] bg-surface text-left"><thead><tr class="border-b border-surface-container-high"><th class="p-4">Oda</th><th class="p-4">Kapasite</th><th class="p-4">Alan</th><th class="p-4">Yatak</th><th class="p-4">Gecelik</th><th class="p-4"></th></tr></thead><tbody>@foreach($roomTypes as $roomType)<tr class="border-b border-surface-container-high/70"><td class="p-4 font-semibold">{{ $roomType->translatedName() }}</td><td class="p-4 text-sm text-on-surface-variant">{{ $roomType->max_adults }} yetişkin · {{ $roomType->max_children }} çocuk</td><td class="p-4 text-sm">{{ $roomType->size_sqm ? $roomType->size_sqm.' m²' : '—' }}</td><td class="p-4 text-sm">{{ $roomType->translatedBedType() }}</td><td class="p-4 font-semibold">₺{{ number_format((float) $roomType->nightly_price, 0, ',', '.') }}</td><td class="p-4 text-right"><a class="text-sm font-semibold text-secondary hover:text-primary" href="{{ route('reservation.step2', ['roomType' => $roomType, 'checkin' => $checkIn->toDateString(), 'checkout' => $checkOut->toDateString(), 'adults' => $adults, 'children' => $children]) }}">İncele →</a></td></tr>@endforeach</tbody></table></div></section>
+            <section class="bg-surface-container-low py-16" id="oda-karsilastirma"><div class="mx-auto max-w-[1440px] overflow-x-auto px-6 lg:px-12"><div class="mb-7"><span class="text-xs font-semibold uppercase tracking-[0.22em] text-secondary">Hızlı Karşılaştırma</span><h2 class="mt-2 font-headline-md text-headline-md">Odalar Yan Yana</h2></div><table class="w-full min-w-[820px] bg-surface text-left"><thead><tr class="border-b border-surface-container-high"><th class="p-4">Oda</th><th class="p-4">Kapasite</th><th class="p-4">Alan</th><th class="p-4">Yatak</th><th class="p-4">Gecelik</th><th class="p-4"></th></tr></thead><tbody>@foreach($roomTypes as $roomType)<tr class="border-b border-surface-container-high/70"><td class="p-4 font-semibold">{{ $roomType->translatedName() }}</td><td class="p-4 text-sm text-on-surface-variant">{{ $roomType->max_adults }} yetişkin · {{ $roomType->max_children }} çocuk</td><td class="p-4 text-sm">{{ $roomType->size_sqm ? $roomType->size_sqm.' m²' : '—' }}</td><td class="p-4 text-sm">{{ $roomType->translatedBedType() }}</td>@php($tableOffer = collect($hmsOffers[$roomType->id] ?? [])->sortBy(fn ($offer) => (float) $offer->total)->first())<td class="p-4 font-semibold">@if($hmsEnabled){{ $tableOffer ? '₺'.number_format((float) $tableOffer->total / max(1, $nights), 0, ',', '.') : '—' }}@else₺{{ number_format((float) $roomType->nightly_price, 0, ',', '.') }}@endif</td><td class="p-4 text-right"><a class="text-sm font-semibold text-secondary hover:text-primary" href="{{ route('reservation.step2', ['roomType' => $roomType, ...$searchParameters]) }}">İncele →</a></td></tr>@endforeach</tbody></table></div></section>
         @endif
     </main>
 </x-layouts.reservation>

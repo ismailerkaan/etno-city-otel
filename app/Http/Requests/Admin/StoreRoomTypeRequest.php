@@ -38,6 +38,7 @@ class StoreRoomTypeRequest extends FormRequest
             'bed_type_en' => ['nullable', 'string', 'max:255'],
             'features_text' => ['nullable', 'string', 'max:3000'],
             'features_en_text' => ['nullable', 'string', 'max:3000'],
+            'hms_room_type_id' => ['nullable', 'integer', 'min:1'],
             'sort_order' => ['required', 'integer', 'min:0', 'max:9999'],
             'is_active' => ['sometimes', 'boolean'],
             'show_on_home' => ['sometimes', 'boolean'],

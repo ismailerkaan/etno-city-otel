@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'slug',
+    'hms_room_type_id',
     'name',
     'name_en',
     'description',
