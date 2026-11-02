@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Database\Factories\ReservationFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -72,6 +74,22 @@ class Reservation extends Model
     public function isHmsReservation(): bool
     {
         return $this->hms_room_type_id !== null;
+    }
+
+    /** Reservation that never reached HMS, or whose last change was rejected by HMS. */
+    public function hasHmsSyncProblem(): bool
+    {
+        return $this->isHmsReservation()
+            && $this->status !== self::STATUS_CANCELLED
+            && ($this->hms_booking_id === null || $this->hms_sync_error !== null);
+    }
+
+    #[Scope]
+    protected function hmsSyncFailed(Builder $query): Builder
+    {
+        return $query->whereNotNull('hms_room_type_id')
+            ->where('status', '!=', self::STATUS_CANCELLED)
+            ->where(fn (Builder $query) => $query->whereNull('hms_booking_id')->orWhereNotNull('hms_sync_error'));
     }
 
     public function guestFullName(): string

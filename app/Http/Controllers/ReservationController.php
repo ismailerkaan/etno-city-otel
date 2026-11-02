@@ -8,10 +8,10 @@ use App\Models\Reservation;
 use App\Models\ReservationGuarantee;
 use App\Models\RoomType;
 use App\Models\SiteSetting;
-use App\Services\Hms\HmsBookingPayload;
 use App\Services\Hms\HmsClient;
 use App\Services\Hms\HmsException;
 use App\Services\Hms\HmsOffer;
+use App\Services\Hms\HmsReservationSync;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
@@ -256,21 +256,10 @@ class ReservationController extends Controller
         });
 
         try {
-            $hmsBookingId = $this->hms->pushBooking(HmsBookingPayload::fromReservation($reservation, $this->hms->hotelId()));
-        } catch (HmsException $exception) {
-            report($exception);
-            $reservation->update(['hms_sync_error' => $exception->getMessage()]);
-
+            app(HmsReservationSync::class)->book($reservation);
+        } catch (HmsException) {
             return back()->withInput()->withErrors(['hms' => 'Rezervasyonunuz şu anda tamamlanamadı. Lütfen tekrar deneyin veya bizimle iletişime geçin.']);
         }
-
-        $reservation->update([
-            'status' => Reservation::STATUS_CONFIRMED,
-            'payment_method' => 'pay_at_hotel',
-            'hms_booking_id' => $hmsBookingId,
-            'hms_synced_at' => now(),
-            'hms_sync_error' => null,
-        ]);
 
         return redirect()->route('reservation.confirmation', $reservation);
     }

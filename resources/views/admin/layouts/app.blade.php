@@ -69,7 +69,13 @@
                 <li class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.dashboard') }}"><i data-feather="home"></i><span class="menu-title text-truncate">Dashboard</span></a></li>
                 <li class="navigation-header"><span>Otel Yönetimi</span><i data-feather="more-horizontal"></i></li>
                 <li class="nav-item {{ request()->routeIs('admin.rooms.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.rooms.index') }}"><i data-feather="layers"></i><span class="menu-title text-truncate">Odalar</span></a></li>
-                <li class="nav-item {{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.reservations.index') }}"><i data-feather="calendar"></i><span class="menu-title text-truncate">Rezervasyonlar</span></a></li>
+                @php
+                    $hmsFailedCount = 0;
+                    try {
+                        $hmsFailedCount = \App\Models\Reservation::query()->hmsSyncFailed()->count();
+                    } catch (\Throwable) {}
+                @endphp
+                <li class="nav-item {{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.reservations.index') }}"><i data-feather="calendar"></i><span class="menu-title text-truncate">Rezervasyonlar</span>@if ($hmsFailedCount > 0)<span class="badge badge-light-danger rounded-pill ms-auto" title="HMS'e aktarılamayan rezervasyon">{{ $hmsFailedCount }}</span>@endif</a></li>
                 <li class="navigation-header"><span>İçerik Yönetimi</span><i data-feather="more-horizontal"></i></li>
 
                 {{-- Anasayfa açılır kapanır --}}
@@ -164,6 +170,7 @@
                 </li>
 
                 <li class="navigation-header"><span>Site</span><i data-feather="more-horizontal"></i></li>
+                <li class="nav-item {{ request()->routeIs('admin.hms.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.hms.edit') }}"><i data-feather="link"></i><span class="menu-title text-truncate">HMS Entegrasyonu</span></a></li>
                 <li class="nav-item {{ request()->routeIs('admin.site-settings.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.site-settings.edit') }}"><i data-feather="settings"></i><span class="menu-title text-truncate">Site Ayarları</span></a></li>
                 <li class="nav-item"><a class="d-flex align-items-center" href="{{ route('home') }}" target="_blank"><i data-feather="external-link"></i><span class="menu-title text-truncate">Siteyi Görüntüle</span></a></li>
             </ul>
@@ -180,6 +187,9 @@
                         <div class="alert-body">{{ session('success') }}</div>
                         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Kapat"></button>
                     </div>
+                @endif
+                @if ($errors->has('hms'))
+                    <div class="alert alert-danger" role="alert"><div class="alert-body">{{ $errors->first('hms') }}</div></div>
                 @endif
                 @yield('content')
             </div>

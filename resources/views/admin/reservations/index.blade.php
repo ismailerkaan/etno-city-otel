@@ -3,7 +3,7 @@
 @section('content')
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-1 mb-2">
         <div><h2 class="mb-25">Rezervasyonlar</h2><p class="text-muted mb-0">Ödeme öncesinde oluşturulan ve tamamlanan rezervasyon kayıtları.</p></div>
-        <form method="GET" action="{{ route('admin.reservations.index') }}"><select class="form-select" name="status" onchange="this.form.submit()"><option value="">Tüm Durumlar</option><option value="payment_pending" @selected($status === 'payment_pending')>Ödeme Bekliyor</option><option value="confirmed" @selected($status === 'confirmed')>Onaylandı</option><option value="cancelled" @selected($status === 'cancelled')>İptal Edildi</option></select></form>
+        <form method="GET" action="{{ route('admin.reservations.index') }}"><select class="form-select" name="status" onchange="this.form.submit()"><option value="">Tüm Durumlar</option><option value="payment_pending" @selected($status === 'payment_pending')>Ödeme Bekliyor</option><option value="confirmed" @selected($status === 'confirmed')>Onaylandı</option><option value="cancelled" @selected($status === 'cancelled')>İptal Edildi</option><option value="hms_failed" @selected($status === 'hms_failed')>HMS'e Aktarılamayan</option></select></form>
     </div>
     <div class="card">
         <div class="table-responsive">
@@ -13,7 +13,7 @@
                 @forelse ($reservations as $reservation)
                     @php $badge = ['payment_pending' => 'warning', 'confirmed' => 'success', 'cancelled' => 'danger'][$reservation->status] ?? 'secondary'; @endphp
                     <tr>
-                        <td><strong>{{ $reservation->reference }}</strong><br><small class="text-muted">{{ $reservation->created_at->format('d.m.Y H:i') }}</small></td>
+                        <td><strong>{{ $reservation->reference }}</strong>@if ($reservation->hasHmsSyncProblem()) <span class="badge badge-light-danger" title="{{ $reservation->hms_sync_error }}">HMS hatası</span>@elseif ($reservation->hms_booking_id) <span class="badge badge-light-info">HMS #{{ $reservation->hms_booking_id }}</span>@endif<br><small class="text-muted">{{ $reservation->created_at->format('d.m.Y H:i') }}</small></td>
                         <td>{{ $reservation->guestFullName() }}<br><small class="text-muted">{{ $reservation->email }}</small></td>
                         <td>{{ $reservation->room_name }}</td>
                         <td>{{ $reservation->check_in->format('d.m.Y') }} – {{ $reservation->check_out->format('d.m.Y') }}<br><small class="text-muted">{{ $reservation->nights }} gece</small></td>

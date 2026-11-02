@@ -2,6 +2,7 @@
 
 namespace App\Services\Hms;
 
+use App\Models\HmsSetting;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
@@ -19,17 +20,78 @@ class HmsClient
     /** Room list error codes meaning "no availability" rather than a failure. */
     private const NO_AVAILABILITY_CODES = [20001, 20002, 20003, 20004];
 
+    /** @var array{enabled: bool, base_url: string, api_key: ?string, api_secret: ?string, hotel_code: ?string}|null */
+    private ?array $settings = null;
+
     public function isEnabled(): bool
     {
-        return (bool) config('services.hms.enabled')
-            && filled(config('services.hms.api_key'))
-            && filled(config('services.hms.api_secret'))
-            && filled(config('services.hms.hotel_code'));
+        $settings = $this->settings();
+
+        return $settings['enabled']
+            && filled($settings['api_key'])
+            && filled($settings['api_secret'])
+            && filled($settings['hotel_code']);
     }
 
     public function hotelId(): int
     {
-        return (int) config('services.hms.hotel_code');
+        return (int) $this->settings()['hotel_code'];
+    }
+
+    /**
+     * Credentials from the admin panel, falling back to env config when they were never saved there.
+     *
+     * @return array{enabled: bool, base_url: string, api_key: ?string, api_secret: ?string, hotel_code: ?string}
+     */
+    public function settings(): array
+    {
+        if ($this->settings !== null) {
+            return $this->settings;
+        }
+
+        $stored = rescue(fn () => HmsSetting::current(), null, report: false);
+
+        return $this->settings = $stored ? [
+            'enabled' => $stored->enabled,
+            'base_url' => (string) $stored->base_url,
+            'api_key' => $stored->api_key,
+            'api_secret' => $stored->api_secret,
+            'hotel_code' => $stored->hotel_code,
+        ] : [
+            'enabled' => (bool) config('services.hms.enabled'),
+            'base_url' => (string) config('services.hms.base_url'),
+            'api_key' => config('services.hms.api_key'),
+            'api_secret' => config('services.hms.api_secret'),
+            'hotel_code' => config('services.hms.hotel_code'),
+        ];
+    }
+
+    /**
+     * Use explicit credentials (e.g. to test them before saving).
+     *
+     * @param  array{enabled: bool, base_url: string, api_key: ?string, api_secret: ?string, hotel_code: ?string}  $settings
+     */
+    public function withSettings(array $settings): static
+    {
+        $client = clone $this;
+        $client->settings = $settings;
+
+        return $client;
+    }
+
+    /**
+     * Log in and list room types to verify the credentials.
+     *
+     * @return array<int, string> HMS room type names
+     */
+    public function testConnection(): array
+    {
+        Cache::forget($this->tokenCacheKey());
+        $checkIn = CarbonImmutable::today()->addDay();
+
+        return collect($this->roomTypes($checkIn, $checkIn->addDay(), 1, fresh: true))
+            ->map(fn (array $item): string => (string) $item['name'])
+            ->all();
     }
 
     /**
@@ -69,7 +131,7 @@ class HmsClient
         }
 
         // Availability changes constantly; only smooth out repeated page views
-        return Cache::remember('hms.room-types.'.md5(serialize($payload)), now()->addMinute(), $fetch);
+        return Cache::remember('hms.room-types.'.md5($this->fingerprint().serialize($payload)), now()->addMinute(), $fetch);
     }
 
     /**
@@ -92,13 +154,7 @@ class HmsClient
      */
     public function roomTypeOptions(): array
     {
-        return Cache::remember('hms.room-type-options.'.$this->hotelId(), now()->addMinutes(10), function (): array {
-            $checkIn = CarbonImmutable::today()->addDay();
-
-            return collect($this->roomTypes($checkIn, $checkIn->addDay(), 1, fresh: true))
-                ->map(fn (array $item): string => (string) $item['name'])
-                ->all();
-        });
+        return Cache::remember('hms.room-type-options.'.$this->fingerprint(), now()->addMinutes(10), fn (): array => $this->testConnection());
     }
 
     /**
@@ -148,8 +204,8 @@ class HmsClient
     {
         return Cache::remember($this->tokenCacheKey(), now()->addDays(6), function (): string {
             $data = $this->decode($this->request()->post('/external/public/login', [
-                'apiKey' => config('services.hms.api_key'),
-                'apiSecret' => config('services.hms.api_secret'),
+                'apiKey' => $this->settings()['api_key'],
+                'apiSecret' => $this->settings()['api_secret'],
                 'hotelCode' => $this->hotelId(),
             ]));
 
@@ -163,12 +219,20 @@ class HmsClient
 
     private function tokenCacheKey(): string
     {
-        return 'hms.token.'.$this->hotelId();
+        return 'hms.token.'.$this->fingerprint();
+    }
+
+    /** Changes whenever the endpoint, credentials or hotel change, so cached tokens and lists never leak across them. */
+    private function fingerprint(): string
+    {
+        $settings = $this->settings();
+
+        return md5(implode('|', [$settings['base_url'], $settings['api_key'], $settings['api_secret'], $settings['hotel_code']]));
     }
 
     private function request(bool $asJson = false): PendingRequest
     {
-        $request = Http::baseUrl(rtrim((string) config('services.hms.base_url'), '/'))
+        $request = Http::baseUrl(rtrim($this->settings()['base_url'], '/'))
             ->acceptJson()
             ->timeout((int) config('services.hms.timeout', 15))
             ->retry(2, 500, fn ($exception): bool => $exception instanceof ConnectionException, throw: false);
