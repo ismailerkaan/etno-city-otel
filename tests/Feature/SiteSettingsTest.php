@@ -147,8 +147,8 @@ class SiteSettingsTest extends TestCase
         $this->get(route('home'))
             ->assertOk()
             ->assertSee('name="google-site-verification" content="search-console_token-123"', false)
-            ->assertSee('https://www.googletagmanager.com/gtag/js?id=G-ABC123XYZ9', false)
-            ->assertSee("gtag('config', 'G-ABC123XYZ9');", false);
+            ->assertSee('const measurementId = "G-ABC123XYZ9";', false)
+            ->assertDontSee('<script async src="https://www.googletagmanager.com', false);
     }
 
     public function test_google_integration_fields_reject_invalid_code(): void
