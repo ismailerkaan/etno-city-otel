@@ -130,6 +130,12 @@
                         <span class="menu-title text-truncate">Rezervasyon Avantajları</span>
                     </a>
                 </li>
+                <li class="nav-item {{ request()->routeIs('admin.menu.*') ? 'active' : '' }}">
+                    <a class="d-flex align-items-center" href="{{ route('admin.menu.index') }}">
+                        <i data-feather="coffee"></i>
+                        <span class="menu-title text-truncate">Menümüz</span>
+                    </a>
+                </li>
                 <li class="nav-item {{ request()->routeIs('admin.contact.*') ? 'active' : '' }}">
                     <a class="d-flex align-items-center" href="{{ route('admin.contact.index') }}">
                         <i data-feather="phone-call"></i>

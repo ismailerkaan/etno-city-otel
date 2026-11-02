@@ -26,6 +26,7 @@
                 <a class="font-label-md text-label-md uppercase tracking-[0.2em] text-on-surface-variant hover:text-on-surface transition-colors py-2" href="{{ route('home') }}#etkinlikler">{{ __('site.experiences') }}</a>
             @endif
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] {{ request()->routeIs('gallery') ? 'text-on-surface font-semibold underline underline-offset-8 decoration-secondary' : 'text-on-surface-variant hover:text-on-surface' }} transition-colors py-2" href="{{ route('gallery') }}">{{ __('site.gallery') }}</a>
+            <a class="font-label-md text-label-md uppercase tracking-[0.2em] {{ request()->routeIs('menu') ? 'text-on-surface font-semibold underline underline-offset-8 decoration-secondary' : 'text-on-surface-variant hover:text-on-surface' }} transition-colors py-2" href="{{ route('menu') }}">{{ __('site.our_menu') }}</a>
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] text-on-surface-variant hover:text-on-surface transition-colors py-2" href="{{ route('home') }}#hikayemiz">{{ __('site.story') }}</a>
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] {{ request()->routeIs('contact') ? 'text-on-surface font-semibold underline underline-offset-8 decoration-secondary' : 'text-on-surface-variant hover:text-on-surface' }} transition-colors py-2" href="{{ route('contact') }}">{{ __('site.contact') }}</a>
         </nav>
@@ -49,6 +50,7 @@
                 <a class="font-label-md text-label-md uppercase tracking-[0.2em] text-on-surface-variant hover:text-on-surface py-2 border-b border-surface-container-high/50" href="{{ route('home') }}#etkinlikler">{{ __('site.experiences') }}</a>
             @endif
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] {{ request()->routeIs('gallery') ? 'text-secondary font-semibold' : 'text-on-surface-variant' }} hover:text-on-surface py-2 border-b border-surface-container-high/50" href="{{ route('gallery') }}">{{ __('site.gallery') }}</a>
+            <a class="font-label-md text-label-md uppercase tracking-[0.2em] {{ request()->routeIs('menu') ? 'text-secondary font-semibold' : 'text-on-surface-variant' }} hover:text-on-surface py-2 border-b border-surface-container-high/50" href="{{ route('menu') }}">{{ __('site.our_menu') }}</a>
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] text-on-surface-variant hover:text-on-surface py-2 border-b border-surface-container-high/50" href="{{ route('home') }}#hikayemiz">{{ __('site.story') }}</a>
             <a class="font-label-md text-label-md uppercase tracking-[0.2em] {{ request()->routeIs('contact') ? 'text-secondary font-semibold' : 'text-on-surface-variant' }} hover:text-on-surface py-2 border-b border-surface-container-high/50" href="{{ route('contact') }}">{{ __('site.contact') }}</a>
             <div class="flex sm:hidden items-center justify-between pt-3 text-on-surface-variant font-label-md uppercase tracking-[0.16em]">

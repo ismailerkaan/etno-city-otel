@@ -4,6 +4,7 @@ return [
     'rooms' => 'Rooms',
     'experiences' => 'Events',
     'wellness' => 'Amenities',
+    'our_menu' => 'Our Menu',
     'gallery' => 'Gallery',
     'story' => 'Our Story',
     'contact' => 'Contact',

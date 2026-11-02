@@ -4,6 +4,7 @@ return [
     'rooms' => 'Odalar',
     'experiences' => 'Etkinlikler',
     'wellness' => 'Olanaklar',
+    'our_menu' => 'Menümüz',
     'gallery' => 'Galeri',
     'story' => 'Hikayemiz',
     'contact' => 'İletişim',
