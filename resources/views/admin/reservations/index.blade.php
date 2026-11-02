@@ -17,7 +17,7 @@
                         <td>{{ $reservation->guestFullName() }}<br><small class="text-muted">{{ $reservation->email }}</small></td>
                         <td>{{ $reservation->room_name }}</td>
                         <td>{{ $reservation->check_in->format('d.m.Y') }} – {{ $reservation->check_out->format('d.m.Y') }}<br><small class="text-muted">{{ $reservation->nights }} gece</small></td>
-                        <td>₺{{ number_format((float) $reservation->total_price, 0, ',', '.') }}</td>
+                        <td>{{ \App\Support\Price::format($reservation->total_price, $reservation->currency) }}</td>
                         <td><span class="badge badge-light-{{ $badge }}">{{ ['payment_pending' => 'Ödeme Bekliyor', 'confirmed' => 'Onaylandı', 'cancelled' => 'İptal Edildi'][$reservation->status] ?? $reservation->status }}</span></td>
                         <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ route('admin.reservations.show', $reservation) }}">Detay</a></td>
                     </tr>

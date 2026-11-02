@@ -205,6 +205,32 @@ class HmsIntegrationTest extends TestCase
         Http::assertSentCount(4);
     }
 
+    public function test_prices_are_shown_in_the_hms_currency(): void
+    {
+        $response = $this->roomListResponse();
+        $response['items'][0]['currency'] = 'EUR';
+        foreach ($response['items'][0]['accommodationTypes'][0]['prices'] as $key => $price) {
+            $response['items'][0]['accommodationTypes'][0]['prices'][$key]['currency'] = 'EUR';
+        }
+        $this->fakeHms(roomTypes: Http::response($response));
+        $roomType = RoomType::factory()->create(['hms_room_type_id' => 2]);
+
+        $this->get(route('reservation.step2', ['roomType' => $roomType, 'checkin' => '2026-10-20', 'checkout' => '2026-10-22', 'adults' => 2]))
+            ->assertOk()
+            ->assertSee('€1.930')
+            ->assertSee('€1.737')
+            ->assertDontSee('₺1.930');
+
+        $this->post(route('reservation.store', $roomType), [...$this->guestPayload(), 'rate_plan_id' => 2, 'price_key' => '2-0']);
+
+        $reservation = Reservation::query()->firstOrFail();
+        $this->assertSame('EUR', $reservation->currency);
+        $this->get(route('reservation.confirmation', $reservation))->assertSee('€1.737');
+
+        Http::assertSent(fn (Request $request): bool => str_ends_with($request->url(), '/external/online/channel/booking')
+            && $request['BookingPushRQ']['Bookings'][0]['Total']['currency'] === 'EUR');
+    }
+
     public function test_hms_outage_shows_friendly_message(): void
     {
         $this->fakeHms(roomTypes: Http::response('Server Error', 500));
