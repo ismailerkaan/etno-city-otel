@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CookiePolicyController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KvkkController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ReservationController;
@@ -48,6 +49,7 @@ Route::get('/menumuz', [MenuController::class, 'index'])->name('menu');
 Route::get('/menu', fn () => redirect()->route('menu'));
 Route::get('/cerez-politikasi', CookiePolicyController::class)->name('cookie-policy');
 Route::get('/cookie-policy', fn () => redirect()->route('cookie-policy'));
+Route::get('/kvkk', KvkkController::class)->name('kvkk');
 
 Route::get('/login', fn () => redirect()->route('admin.login'))->name('login');
 

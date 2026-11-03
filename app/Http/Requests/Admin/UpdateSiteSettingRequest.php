@@ -27,6 +27,7 @@ class UpdateSiteSettingRequest extends FormRequest
             'phone' => ['nullable', 'string', 'max:50'],
             'email' => ['nullable', 'email', 'max:255'],
             'address' => ['nullable', 'string', 'max:1000'],
+            'legal_company_name' => ['nullable', 'string', 'max:255'],
             'logo' => ['nullable', 'file', 'mimes:png,jpg,jpeg,svg,webp', 'max:5120'],
             'remove_logo' => ['sometimes', 'boolean'],
             'instagram_url' => ['nullable', 'string', 'max:2048'],

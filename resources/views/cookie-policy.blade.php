@@ -24,7 +24,7 @@
 
         <section class="w-full py-12 lg:py-20 bg-surface">
             <div class="max-w-3xl mx-auto px-6 lg:px-12 space-y-10 font-body-md text-body-md text-on-surface-variant font-light leading-relaxed">
-                <p>{{ __('cookies.page_intro', ['hotel' => $hotelName]) }}</p>
+                <p>{{ __('cookies.page_intro', ['hotel' => $hotelName]) }} <a class="text-secondary underline underline-offset-4" href="{{ route('kvkk') }}">{{ __('kvkk.link') }}</a></p>
 
                 <div class="space-y-3">
                     <h2 class="font-headline-sm text-headline-sm text-on-surface">{{ __('cookies.what_title') }}</h2>

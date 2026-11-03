@@ -84,7 +84,7 @@
         </div>
         <div class="pt-8 border-t border-surface-container-high flex flex-col md:flex-row items-center justify-between gap-6 font-label-sm text-outline uppercase tracking-[0.16em]">
             <p>© {{ now()->year }} {{ $siteSetting?->hotel_name ?? 'EtnoCity Otel' }}. {{ __('site.rights') }}</p>
-            <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2"><a href="#">{{ __('site.privacy') }}</a><a href="{{ route('cookie-policy') }}">{{ __('cookies.policy_link') }}</a><a href="#" data-cookie-preferences>{{ __('cookies.preferences') }}</a><a href="#">{{ __('site.terms') }}</a></div>
+            <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2"><a href="{{ route('kvkk') }}">{{ __('kvkk.link') }}</a><a href="{{ route('cookie-policy') }}">{{ __('cookies.policy_link') }}</a><a href="#" data-cookie-preferences>{{ __('cookies.preferences') }}</a><a href="#">{{ __('site.terms') }}</a></div>
         </div>
     </div>
 </footer>

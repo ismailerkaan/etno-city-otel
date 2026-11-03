@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 
 #[Fillable([
-    'hotel_name', 'phone', 'email', 'address', 'logo_url', 'instagram_url', 'whatsapp_url',
+    'hotel_name', 'legal_company_name', 'phone', 'email', 'address', 'logo_url', 'instagram_url', 'whatsapp_url',
     'facebook_url', 'youtube_url', 'tripadvisor_url',
     'google_analytics_measurement_id', 'google_search_console_verification',
     'hero_eyebrow', 'hero_title', 'hero_subtitle', 'hero_image_url',

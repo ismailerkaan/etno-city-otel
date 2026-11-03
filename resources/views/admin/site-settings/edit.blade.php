@@ -46,6 +46,12 @@
                         @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-12 mb-1">
+                        <label class="form-label" for="legal_company_name">Şirket Unvanı (KVKK Veri Sorumlusu)</label>
+                        <input class="form-control @error('legal_company_name') is-invalid @enderror" id="legal_company_name" name="legal_company_name" value="{{ old('legal_company_name', $siteSetting->legal_company_name) }}" placeholder="Örn: EtnoCity Turizm Otelcilik Ltd. Şti.">
+                        <small class="text-muted">KVKK Aydınlatma Metni'nde veri sorumlusu olarak gösterilir. Boş bırakılırsa otel adı kullanılır.</small>
+                        @error('legal_company_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-12 mb-1">
                         <label class="form-label" for="address">Adres</label>
                         <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address" rows="2">{{ old('address', $siteSetting->address) }}</textarea>
                         @error('address')<div class="invalid-feedback">{{ $message }}</div>@enderror

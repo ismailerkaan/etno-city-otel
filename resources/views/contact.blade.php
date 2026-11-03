@@ -255,9 +255,8 @@
                             {{-- Privacy Note & Button --}}
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
                                 <span class="font-body-sm text-xs text-outline max-w-sm">
-                                    {{ app()->isLocale('en')
-                                        ? 'By submitting, you agree to our confidential handling of your correspondence.'
-                                        : 'Göndererek kişisel verilerinizin gizlilik politikamız kapsamında işlenmesini kabul etmiş olursunuz.' }}
+                                    {{ app()->isLocale('en') ? 'Your personal data is processed as described in our' : 'Kişisel verileriniz' }}
+                                    <a class="underline underline-offset-2 hover:text-on-surface" href="{{ route('kvkk') }}" target="_blank">{{ __('kvkk.link') }}</a>{{ app()->isLocale('en') ? '.' : ' kapsamında işlenir.' }}
                                 </span>
 
                                 <button type="submit" class="px-8 py-4 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary transition-colors duration-300 font-label-md text-label-md uppercase tracking-[0.24em] inline-flex items-center justify-center gap-3 flex-shrink-0 shadow-sm">
