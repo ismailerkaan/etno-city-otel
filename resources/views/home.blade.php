@@ -126,8 +126,8 @@
             {{ $siteSetting->translated('about_secondary_text') }}
           </p>
 <div class="pt-4 flex flex-col sm:flex-row items-start sm:items-center gap-8">
-<a class="inline-flex items-center gap-3 font-label-md text-label-md uppercase tracking-[0.24em] text-primary hover:text-secondary group transition-colors" href="#">
-<span>EtnoCity’yi Yakından Tanıyın</span>
+<a class="inline-flex items-center gap-3 font-label-md text-label-md uppercase tracking-[0.24em] text-primary hover:text-secondary group transition-colors" href="{{ route('gallery') }}">
+<span>{{ app()->isLocale('en') ? 'Take a Closer Look' : 'EtnoCity’yi Yakından Tanıyın' }}</span>
 <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1.5 transition-transform">arrow_right_alt</span>
 </a>
 <div class="flex items-center gap-3 px-4 py-2 bg-surface-container">
@@ -366,8 +366,8 @@
 </div>
 <div class="flex items-center gap-6">
 @if ($events->isNotEmpty())
-<a class="font-label-md text-label-md uppercase tracking-[0.22em] text-primary hover:text-secondary flex items-center gap-2" href="#">
-<span>{{ app()->isLocale('en') ? 'View All '.$events->count().' Events' : 'Tüm '.$events->count().' Organizasyonu Görüntüle' }}</span>
+<a class="font-label-md text-label-md uppercase tracking-[0.22em] text-primary hover:text-secondary flex items-center gap-2" href="{{ route('contact') }}">
+<span>{{ app()->isLocale('en') ? 'Request an Event Quote' : 'Organizasyon Talebi Oluşturun' }}</span>
 <span class="material-symbols-outlined text-[18px]">east</span>
 </a>
 {{-- Carousel İleri / Geri Butonları --}}
@@ -626,47 +626,6 @@
 </div>
 </div>
 </section>
-<!-- 9. INTERACTIVE AVAILABILITY OVERLAY MODAL -->
-<div class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm hidden items-center justify-center p-4" id="availabilityModal">
-<div class="bg-surface max-w-xl w-full p-8 lg:p-10 shadow-2xl space-y-6 relative">
-<button class="absolute top-6 right-6 text-on-surface-variant hover:text-on-surface" id="closeModalBtn">
-<span class="material-symbols-outlined text-[24px]">close</span>
-</button>
-<div class="space-y-2">
-<span class="font-label-sm text-label-sm uppercase tracking-[0.25em] text-secondary">EtnoCity Rezervasyon Masası</span>
-<h3 class="font-headline-md text-headline-md text-on-surface">Konaklama Müsaitlik Sorgusu</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Ekim 12 – Ekim 17, 2025 tarihleri için gerçek zamanlı müsaitlik kontrolü yapılıyor.</p>
-</div>
-<div class="space-y-4 pt-2">
-<div class="p-4 bg-surface-container-low flex items-center justify-between">
-<div>
-<p class="font-title-md text-title-md text-on-surface">Deluxe Deniz Manzaralı Oda</p>
-<p class="font-body-sm text-body-sm text-secondary">2 Oda Müsait</p>
-</div>
-<span class="font-headline-sm text-headline-sm text-on-surface">₺5,750</span>
-</div>
-<div class="p-4 bg-surface-container-low flex items-center justify-between">
-<div>
-<p class="font-title-md text-title-md text-on-surface">Uçurum Kenarı Sonsuzluk Süiti</p>
-<p class="font-body-sm text-body-sm text-secondary">1 Oda Müsait (Son Oda)</p>
-</div>
-<span class="font-headline-sm text-headline-sm text-on-surface">₺9,200</span>
-</div>
-<div class="p-4 bg-surface-container-low flex items-center justify-between opacity-60">
-<div>
-<p class="font-title-md text-title-md text-on-surface">Zeytin Bahçesi Villası</p>
-<p class="font-body-sm text-body-sm text-error">Seçilen Tarihlerde Dolu</p>
-</div>
-<span class="font-label-sm text-label-sm uppercase text-outline">Tükendi</span>
-</div>
-</div>
-<div class="pt-4 flex items-center gap-4">
-<a class="flex-1 py-3.5 bg-primary text-on-primary hover:bg-secondary hover:text-on-secondary transition-colors font-label-md text-label-md uppercase tracking-[0.2em] text-center" href="#">
-          Özel Rezervasyona Geç
-        </a>
-</div>
-</div>
-</div>
 <!-- Inline Vanilla Interactive Script -->
 
 </div>
@@ -674,36 +633,6 @@
 @push('scripts')
 <script>
     (function initSanctuaryInteractions() {
-      // Modal triggers
-      const heroCheckBtn = document.getElementById('heroCheckBtn');
-      const conciergeModalTrigger = document.getElementById('conciergeModalTrigger');
-      const modal = document.getElementById('availabilityModal');
-      const closeModalBtn = document.getElementById('closeModalBtn');
-
-      function openModal() {
-        if (modal) {
-          modal.classList.remove('hidden');
-          modal.classList.add('flex');
-        }
-      }
-
-      function closeModal() {
-        if (modal) {
-          modal.classList.add('hidden');
-          modal.classList.remove('flex');
-        }
-      }
-
-      if (heroCheckBtn) heroCheckBtn.addEventListener('click', openModal);
-      if (conciergeModalTrigger) conciergeModalTrigger.addEventListener('click', openModal);
-      if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-
-      if (modal) {
-        modal.addEventListener('click', (e) => {
-          if (e.target === modal) closeModal();
-        });
-      }
-
       // Homepage Gallery Lightbox Logic
       const homeLightbox = document.getElementById('homeGalleryLightbox');
       const homeLightboxImg = document.getElementById('homeLightboxImg');
